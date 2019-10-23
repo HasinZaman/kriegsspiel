@@ -1,16 +1,166 @@
-
-body > div{
-	position: absolute;
-	top: 0;
-	left: 0;
+body{
+	overflow: hidden;
+	> div{
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
 }
 
+//---------- menu styles ----------
+
+//main menu
+$borderSize: 5px;
+$width: 800px;
+$padding: 15px;
 #menu{
-	width: 100vw;
-	height: 100vh;
+    height: 75px;
+
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    position: fixed;
+
+    top: -70px;
+    
+	-webkit-transition: top 0.3s;
+	transition: top 0.3s;
+
+    background-color: green;
+    border: solid $borderSize black;
+    border-top: none;
+    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+
+    overflow-y: hidden;
+    overflow-x: auto;
+
+    z-index: 3;
+
+    > div{
+
+    	min-width: 60px;
+    	max-width: 60px;
+    	min-height: 60px;
+    	max-height: 60px;
+
+    	padding: 5px;
+
+    	display: grid;
+
+    	grid-template-rows: 80% 20%;
+    	grid-template-columns: 100%;
+
+    	grid-row-gap: 2px;
+
+    	-webkit-transition: transform 0.1s;
+    	transition: transform 0.1s ease-in-out;
+
+    	background-color: red;
+    	img{
+    		width: auto;
+    		height: 100%;
+    	}
+    	label{
+    		width: 100%;
+    		height: 100%;
+
+    		font-size: 13px;
+    	}
+
+    }
+
+    > .active{
+    	//outline
+    	transform: scale(1.2);
+    }
+}
+@media screen and (min-width: 800px){
+	#menu{
+		width: $width;
+
+		padding-left: $padding;
+		padding-right: $padding;
+
+		left: 50%;
+
+	    margin-left: -($borderSize + $width + $padding)/2;
+
+	    border-radius: 0px 0px 50px 50px;
+	}
+	.sub-menu{
+		width: $width;
+
+    	padding-left: $padding;
+		padding-right: $padding;
+
+		margin-left: -($borderSize + $width + $padding)/2;
+
+		border-radius: 50px;
+
+    	left:50%;
+	}
+}
+@media screen and (max-width: 800px){
+	#menu{
+		width: 80%;
+
+		padding-left: 10%;
+		padding-right: 10%;
+
+		left:0px;
+
+		border-left: none;
+		border-right: none;
+
+	}
+	.sub-menu{
+		width: 80%;
+
+    	padding-left: 10%;
+		padding-right: 10%;
+
+		left: 0px;
+	}
 }
 
+#menu:hover, #menu.active{
+	top: 0px !important;
+}
+
+
+//sub menu
+
+.sub-menu{
+
+	height: fit-content;
+
+	position: fixed;
+	display: none;
+
+	top:120px;
+
+	padding: 5px;
+
+	border: solid 5px black;
+	border-radius: 50px;
+
+}
+
+.sub-menu.active{
+	display: block;
+}
+//---------- menu styles ----------
 #surface{
 	width: 100vw;
 	height: 100vh;
+
+	z-index: 2;
+}
+
+#map{
+	z-index: 1;
 }
