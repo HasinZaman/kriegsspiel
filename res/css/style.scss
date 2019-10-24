@@ -78,6 +78,11 @@ $padding: 15px;
     	transform: scale(1.2);
     }
 }
+
+#menu:hover, #menu.active{
+	top: 0px !important;
+}
+
 @media screen and (min-width: 800px){
 	#menu{
 		width: $width;
@@ -115,7 +120,6 @@ $padding: 15px;
 
 		border-left: none;
 		border-right: none;
-
 	}
 	.sub-menu{
 		width: 80%;
@@ -127,9 +131,7 @@ $padding: 15px;
 	}
 }
 
-#menu:hover, #menu.active{
-	top: 0px !important;
-}
+
 
 
 //sub menu
@@ -148,10 +150,50 @@ $padding: 15px;
 	border: solid 5px black;
 	border-radius: 50px;
 
+	flex-direction: column;
+
+	background-color: white;
+
+	z-index: 3;
+
+	> *{
+		width:80%;
+		height: fit-content;
+
+		margin: 10px 10%;
+
+		display: flex;
+
+		*:not(:first-child){
+			margin-left: 20px;
+		}
+	}
+
+	.url{
+		padding: 3px;
+
+		background-color: #c5c5c5;
+
+		outline: solid 1px black;
+
+		width: 80%;
+	}
+
+	input[type="text"]{
+		height: 30px;
+	}
+	
+	.cross{
+		width: auto;
+		height: 100%;
+	}
+
+
+
 }
 
 .sub-menu.active{
-	display: block;
+	display: flex;
 }
 //---------- menu styles ----------
 #surface{
@@ -162,5 +204,29 @@ $padding: 15px;
 }
 
 #map{
+
 	z-index: 1;
+
+	>div{
+		position: relative;
+
+		width: fit-content;
+		height: fit-content;
+	
+		>.unit{
+			position: absolute;
+
+			outline: solid 2px black;
+		}
+
+		.light{
+			outline-color: green !important;
+		}
+
+		>img{
+			width: 100vw;
+			height: auto;
+		}
+	}
+	
 }

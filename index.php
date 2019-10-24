@@ -2,8 +2,6 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="res\css\style.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
 </head>
 <body>
 	<div id="menu">
@@ -28,39 +26,69 @@
 	</div>
 
 	<div id="senerioSetting" class="sub-menu">
-		<form>
 
-			<label>Senerio name</label>
-			<input type="text">
-			
-			<label>map url</label>
-			<input type="text">
+		<label>Senerio name</label>
+		<input id="senerioName" type="text">
+		
+		<label>map url</label>
+		<input id="mapUrl" type="text">
 
-			<label>url</label>
-			<div class="url"></div>
-			<button>copy</button>
+		<label>url</label>
+		<div>
+			<input class="url" readonly type="text">
+			<button onclick="
 
-		</form>
+				$('.url').focus();
+				$('.url').select();
+				document.execCommand('copy');
+				alert('the game url has been coppied');
+				">
+  				copy
+  			</button>
+		</div>
 	</div>
 
 	<div id="teamSetting" class="sub-menu">
 
 		<div>
-
+			teams
+			<button onclick="makeTeam()">add Team</button>
+		</div>
+		<div id="team" data-teamid="0">
+			<input type="text" value="team1">
+			<label>Primary Colour:</label>
+			<input type="color" name="primaryColour" value="#0054FE" '="">
+			<label>Secondary Colour:</label>
+			<input type="color" name="secondaryColour" value="#9293FF">
+			<label>Highlight Colour:</label>
+			<input type="color" name="secondaryColour" value="#FFFFFF">
+			<img class="cross" onclick="removeTeam(this)" src="res\img\cross.svg">
+		</div>
+		<div id="team" data-teamid="1">
+			<input type="text" value="team2">
+			<label>Primary Colour:</label>
+			<input type="color" name="primaryColour" value="#FF0800" '="">
+			<label>Secondary Colour:</label>
+			<input type="color" name="secondaryColour" value="#28AE00">
+			<label>Highlight Colour:</label>
+			<input type="color" name="secondaryColour" value="#FFFFFF">
+			<img class="cross" onclick="removeTeam(this)" src="res\img\cross.svg">
 		</div>
 	</div>
-
 
 	<div id="surface">
 
 	</div>
 	<div id="map">
-
-		<img id="map" style="width:100vw;height: 100vh;">
+		<div>
+			<img id="map">
+		</div>
 	</div>
+
+	<!-- scripts -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript" src="res\script\scenarioCreator.js"></script>
 	<script type="text/javascript" src="res\script\map.js"></script>
 	<script type="text/javascript" src="res\script\menu.js"></script>
-	<script type="text/javascript">start(prompt(),[])</script>
 </body>
 </html>
