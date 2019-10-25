@@ -75,10 +75,49 @@
 			<img class="cross" onclick="removeTeam(this)" src="res\img\cross.svg">
 		</div>
 	</div>
-
-	<div id="surface">
-
+	<div id="unitMenu" class="sub-menu" data-unit-id="">
+		<div>
+			<div id="rotateUnit">
+				<img src="res\img\rotate.svg" alt="rotate unit symbol">
+				<div>
+					Rotate
+				</div>
+			</div>
+			<div id="moveUnit">
+				<img  src="res\img\move.svg" alt="move unit symbol">
+				<div>
+					Move
+				</div>
+			</div>
+		</div>
+		<div>
+			<label>Id:</label>
+			<input id="unitId" class="url" readonly type="text">
+		</div>
+		<div>
+			<label>
+				Unit Type
+			</label>
+			<select id="unitType">
+				<option value="zug">Zug</option>
+				<option value="company">Company</option>
+				<option value="hBattalion">Half Battalion</option>
+			</select>
+			<label>
+				Light:
+			</label>
+			<input id="lightUnit" type="checkbox">
+		</div>
+		<div>
+			<label>Points</label>
+			<input id="unitPoint" type="text" name="points">
+		</div>
+		<button>appy</button>
 	</div>
+
+<!-- 	<div id="surface">
+
+	</div> -->
 	<div id="map">
 		<div>
 			<img id="map">

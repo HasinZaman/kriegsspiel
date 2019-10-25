@@ -15,8 +15,7 @@ function makeid(length) {
 senerioToken = makeid(10)
 mapURL = ""
 description = ""
-teams= [["team1","#0054FE","#9293FF","#FFFFFF"],["team2","#FF0800","#28AE00","#FFFFFF"]];
-units = [];
+
 
 //---------------   units   ---------------
 
@@ -36,8 +35,6 @@ var templateTeam = [
 	//["Confederate","#009530","#CB2027","#FCDD09"]
 ]
 
-//team id
-
 //adds team
 function makeTeam(){
 	teams.push(templateTeam[Math.floor(Math.random()*templateTeam.length)])
@@ -54,10 +51,8 @@ function removeTeam(team){
 	$(team).parent().remove()
 
 }
-//---------------   units   ---------------
 
-//createdUnits is to id every unit
-createdUnits = 0
+//---------------   units   ---------------
 
 function createUnit(unitXCord=0, unitYCord=0, unitRot=0, unitTeam=0, unitVisibility=false){
 	unit = {id: createdUnits, x: unitXCord, y: unitYCord, team: unitTeam, visibility: unitVisibility}

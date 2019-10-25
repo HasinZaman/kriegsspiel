@@ -21,8 +21,14 @@ function senerioCreator(object){
 			try{
 				newUnit([teams[0][1],teams[0][2],teams[0][3]])
 				$(".active").removeClass("active")
-			}catch(e){
-				alert("there are no teams")
+			}catch(error){
+
+				if(error.toString(0,45) === "TypeError: Cannot read property '1' of undefined"){
+					alert("there are no teams")	
+				}else{
+					console.log(error)
+				}
+			 	
 			}
 		}
 	}
