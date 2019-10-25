@@ -187,10 +187,6 @@ $("#map").mousemove(function(event){
 			angle= 360 - angle
 		//quadrant 1
 		}
-
-		
-
-		console.log(angle)
 		
 		$(".rotating").css("transform","rotate("+angle+"deg)")
 	}
@@ -205,11 +201,13 @@ $("#map").click(function(event){
 
 		$(".moving").css("left",event.clientX+"px")
 		$(".moving").css("top",event.clientY+"px")
-		$(".moving").toggleClass("moving");
+		$(".moving").removeClass("moving");
 
 		movingUnit=false
 	}else if(rotatingUnit){
 		//fix rotation
+
+		$(".rotating").removeClass("rotating")
 
 		rotatingUnit=false
 	}
