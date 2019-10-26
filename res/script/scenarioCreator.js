@@ -65,7 +65,7 @@ function createUnit(unitXCord=0, unitYCord=0, unitRot=0, unitTeam=0, unitVisibil
 //sets up game link
 $(".url").val("http://kreigsspeil.dx.am/game?id="+senerioToken)
 
-$("div.sub-menu #mapUrl").keypress(function(){
-	console.log($("div.sub-menu #mapUrl").val())
-	$("#map > img").attr("src",$("div.sub-menu #mapUrl").val())
+$("#senerioSetting.sub-menu #mapUrl").keypress(function(){
+	console.log($("#senerioSetting.sub-menu #mapUrl").val())
+	$("img#map").attr("src",$("#senerioSetting.sub-menu #mapUrl").val())
 })

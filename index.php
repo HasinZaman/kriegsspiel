@@ -94,6 +94,9 @@
 			<label>Id:</label>
 			<input id="unitId" class="url" readonly type="text">
 		</div>
+		<div id="teams">
+			
+		</div>
 		<div>
 			<label>
 				Unit Type
@@ -112,7 +115,7 @@
 			<label>Points</label>
 			<input id="unitPoint" type="text" name="points">
 		</div>
-		<button>appy</button>
+		<button id="apply">appy</button>
 	</div>
 
 <!-- 	<div id="surface">

@@ -20,6 +20,15 @@ var teams= [["team1","#0054FE","#9293FF","#FFFFFF"],["team2","#FF0800","#28AE00"
 var movingUnit = false;
 var rotatingUnit = false;
 
+//finds teams by the name
+function findTeam(teamName){
+	for (var i1 =0; i1<teams.length; i1++){
+		if(teamName===teams[i1][0]){
+			return teams[i1]
+		}
+	}
+}
+
 //drawsUnit can both create and convert a unit from one type to another
 function drawUnit(type, teamColour, light=false, id=undefined, moveable=false){
 	
@@ -41,7 +50,9 @@ function drawUnit(type, teamColour, light=false, id=undefined, moveable=false){
 
 		unit = $("#unit-"+unitId+".unit")
 	}else{
-		unit = $("#unit-"+id+".unit")
+		unit = $("#"+id+".unit")
+
+		unit.html()
 	}
 	
 
@@ -74,15 +85,27 @@ function drawUnit(type, teamColour, light=false, id=undefined, moveable=false){
 	if (light===true){
 		unit.toggleClass("light")
 	}
-	if(moveable===true){
-		unit.attr("onclick","unitEdit()")
-	}
 }
 
 //opens unit sub menu
 function unitMenuOpen(unitRaw){
 
 	var unit = units[$(unitRaw).attr("id").substring(5,$(unitRaw).attr("id").length)]
+
+	//<input type="radio" name="team" value="name"><label>name</label>
+	$("#unitMenu.sub-menu #teams").html("")
+
+	//sets up teams
+	for (var i1=0; i1<teams.length;i1++){
+		$("#unitMenu.sub-menu #teams").append("<input type=\"radio\" name=teamName value="+teams[i1][0]+"><label>"+teams[i1][0]+"</label>")
+
+		if(teams[i1][0]===unit.team){
+			console.log(teams[i1][0])
+			console.log(unit.team)
+			$("#unitMenu.sub-menu #teams input[name=teamName]").last().prop("checked",true)			
+		}
+	}
+
 
 	$("#unitMenu.sub-menu").toggleClass("active")
 	
@@ -91,12 +114,47 @@ function unitMenuOpen(unitRaw){
 
 	$("#unitMenu.sub-menu #unitId").val(unit.unitId)
 	$("#unitMenu.sub-menu #unitType").val(unit.unitType)
-	$("#unitMenu.sub-menu #lightUnit").attr('checked', unit.light)
+	$("#unitMenu.sub-menu #lightUnit").prop('checked', unit.light)
 	$("#unitMenu.sub-menu #unitPoint").val(unit.points)
 
 	$("#unitMenu select")
 }
 
+$("#unitMenu.sub-menu #apply").click(function(){
+	var unit = units[$("#unitMenu.sub-menu").attr("data-unit-id").substring(5,$("#unitMenu.sub-menu").attr("data-unit-id").length)]
+
+	var drawingCond = false
+
+	if($('#unitMenu.sub-menu #teams input[name=teamName]:checked').val() != unit.team){
+		unit.team = $('#unitMenu.sub-menu #teams input[name=teamName]:checked').val()
+
+		drawingCond = true
+	}
+
+	if($("#unitMenu.sub-menu #unitType option:selected").val() !== unit.unitType){
+		unit.unitType = $("#unitMenu.sub-menu #unitType").val()
+
+		drawingCond = true
+	}
+
+	if($("#unitMenu.sub-menu #lightUnit").prop("checked") !== unit.light){
+		unit.light = $("#unitMenu.sub-menu #lightUnit").prop("checked")
+		
+		drawingCond = true
+	}
+
+	if(parseInt($("#unitMenu.sub-menu #unitPoint").val()) !== unit.points){
+		unit.points = parseInt($("#unitMenu.sub-menu #unitPoint").val())
+	}
+
+	if(drawingCond = true){
+		var team = findTeam(unit.team)
+		drawUnit(unit.unitType, [team[1],team[2],team[3]], light=unit.light, id=unit.unitId)
+	}
+
+	units[$("#unitMenu.sub-menu").attr("data-unit-id").substring(5,$("#unitMenu.sub-menu").attr("data-unit-id").length)] = unit
+
+})
 //moves unit
 $("#unitMenu #moveUnit").click(function(){
 
@@ -110,6 +168,7 @@ $("#unitMenu #moveUnit").click(function(){
 	
 })
 
+//rotates units
 $("#unitMenu #rotateUnit").click(function(){
 	if(movingUnit == false && rotatingUnit==false){
 		$("#"+$("#unitMenu.sub-menu").attr("data-unit-id")).toggleClass("rotating")
