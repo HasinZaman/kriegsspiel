@@ -242,6 +242,18 @@ $padding: 15px;
 
 	z-index: 1;
 
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+
+	transform: scale(1);
+
+	transition: transfrom 0.5s;
+
 	>div{
 		position: relative;
 
@@ -256,11 +268,6 @@ $padding: 15px;
 
 		.light{
 			outline: solid 5px green !important;
-		}
-
-		>img{
-			width: 100vw;
-			height: auto;
 		}
 	}
 }

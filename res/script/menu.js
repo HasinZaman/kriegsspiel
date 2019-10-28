@@ -19,7 +19,7 @@ function senerioCreator(object){
 		
 		}else if(action === "placeUnit"){
 			try{
-				newUnit([teams[0][1],teams[0][2],teams[0][3]])
+				newUnit([teams[0].primaryColour,teams[0].secondaryColour,teams[0].highlightColour])
 				$(".active").removeClass("active")
 			}catch(error){
 

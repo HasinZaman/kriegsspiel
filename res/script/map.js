@@ -1,6 +1,20 @@
-
+//global variables
+var mapScale = 1 // map scale is renfrence to how much user has zoomed into the map
+var unitScale = 1 // unit scale is in refrence to the map
 
 //----------   Unit   ----------
+//creates a unquie id
+function idGen(){
+	var result = '';
+	var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	var charactersLength = characters.length;
+	var date = new Date();
+	for ( var i = 0; i < 10; i++ ) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	}
+	return result+Math.round((new Date()).getTime() / 1000);;
+}
+
 //unit templates
 var unitTemplates = new Map();
 
@@ -14,43 +28,50 @@ unitTemplates.set("company",{height:75,width:75,men:250})
 var units = [];
 
 //all the teams on the maps
-var teams= [["team1","#0054FE","#9293FF","#FFFFFF"],["team2","#FF0800","#28AE00","#FFFFFF"]];
+var teams= [{name:"team1", id:idGen(), primaryColour:"#0054FE", secondaryColour:"#9293FF", highlightColour:"#FFFFFF"},
+	{name:"team2", id:idGen(), primaryColour:"#FF0800", secondaryColour:"#28AE00", highlightColour:"#FFFFFF"}];
+
+
 
 //action booleans
 var movingUnit = false;
 var rotatingUnit = false;
 
 //finds teams by the name
-function findTeam(teamName){
-	for (var i1 =0; i1<teams.length; i1++){
-		if(teamName===teams[i1][0]){
-			return teams[i1]
+function find(id, searchList, action = "item", searchObject = "id"){//item=return item||index = return item index
+	for (var i1 =0; i1<searchList.length; i1++){
+		if(searchObject == "id"){
+			if(id===searchList[i1].id){
+				if(action == "item"){
+					return searchList[i1]
+				}else{
+					return i1
+				}		
+			}
+		}else{
+			if(id === searchList[i1].name){
+				if(action == "item"){
+					return searchList[i1]
+				}else{
+					return i1
+				}		
+			}
 		}
 	}
 }
 
 //drawsUnit can both create and convert a unit from one type to another
-function drawUnit(type, teamColour, light=false, id=undefined, moveable=false){
+function drawUnit(type, teamColour, id, light=false, placed=true, moveable=false){
 	
 	var unit;
 
-	if (id == undefined){
+	if (placed === false){
 
-		var unitId;
+		$("#map div").append("<svg id='unit-"+id+"' class='unit moving new' onclick='unitMenuOpen(this)'></svg>")
 
-		var lastUnit = $(".unit").last().attr("id")
-
-		if (lastUnit === undefined){
-			unitId=0
-		}else{
-			unitId = parseInt(lastUnit.substring(5, lastUnit.length))+1	
-		}
-
-		$("#map div").append("<svg id='unit-"+unitId+"' class='unit moving' onclick='unitMenuOpen(this)'></svg>")
-
-		unit = $("#unit-"+unitId+".unit")
+		unit = $("#unit-"+id+".unit")
 	}else{
-		unit = $("#"+id+".unit")
+		unit = $("#unit-"+id+".unit")
 
 		unit.html()
 	}
@@ -90,18 +111,16 @@ function drawUnit(type, teamColour, light=false, id=undefined, moveable=false){
 //opens unit sub menu
 function unitMenuOpen(unitRaw){
 
-	var unit = units[$(unitRaw).attr("id").substring(5,$(unitRaw).attr("id").length)]
+	var unit = find($(unitRaw).attr("id").substring(5,$(unitRaw).attr("id").length),units)
 
 	//<input type="radio" name="team" value="name"><label>name</label>
 	$("#unitMenu.sub-menu #teams").html("")
 
 	//sets up teams
 	for (var i1=0; i1<teams.length;i1++){
-		$("#unitMenu.sub-menu #teams").append("<input type=\"radio\" name=teamName value="+teams[i1][0]+"><label>"+teams[i1][0]+"</label>")
+		$("#unitMenu.sub-menu #teams").append("<input type=\"radio\" name=teamName value="+teams[i1].name+"><label>"+teams[i1].name+"</label>")
 
-		if(teams[i1][0]===unit.team){
-			console.log(teams[i1][0])
-			console.log(unit.team)
+		if(teams[i1].name===unit.team){
 			$("#unitMenu.sub-menu #teams input[name=teamName]").last().prop("checked",true)			
 		}
 	}
@@ -110,19 +129,17 @@ function unitMenuOpen(unitRaw){
 	$("#unitMenu.sub-menu").toggleClass("active")
 	
 	//updates the sub menu for the specific unit
-	$("#unitMenu.sub-menu").attr("data-unit-id",unit.unitId)
+	$("#unitMenu.sub-menu").attr("data-unit-id",unit.id)
 
-	$("#unitMenu.sub-menu #unitId").val(unit.unitId)
+	$("#unitMenu.sub-menu #unitId").val(unit.id)
 	$("#unitMenu.sub-menu #unitType").val(unit.unitType)
 	$("#unitMenu.sub-menu #lightUnit").prop('checked', unit.light)
 	$("#unitMenu.sub-menu #unitPoint").val(unit.points)
 
-	$("#unitMenu select")
 }
 
 $("#unitMenu.sub-menu #apply").click(function(){
-	var unit = units[$("#unitMenu.sub-menu").attr("data-unit-id").substring(5,$("#unitMenu.sub-menu").attr("data-unit-id").length)]
-
+	var unit = find($("#unitMenu.sub-menu").attr("data-unit-id"),units)
 	var drawingCond = false
 
 	if($('#unitMenu.sub-menu #teams input[name=teamName]:checked').val() != unit.team){
@@ -148,18 +165,18 @@ $("#unitMenu.sub-menu #apply").click(function(){
 	}
 
 	if(drawingCond = true){
-		var team = findTeam(unit.team)
-		drawUnit(unit.unitType, [team[1],team[2],team[3]], light=unit.light, id=unit.unitId)
+		var team = find(unit.team, teams, action = "item", searchObject = "name")
+		drawUnit(unit.unitType, [team.primaryColour, team.secondaryColour, team.highlightColour], unit.id, light=unit.light)
 	}
 
-	units[$("#unitMenu.sub-menu").attr("data-unit-id").substring(5,$("#unitMenu.sub-menu").attr("data-unit-id").length)] = unit
+	units[find($("#unitMenu.sub-menu").attr("data-unit-id").substring(5,$("#unitMenu.sub-menu").attr("data-unit-id").length), units, acton = "index")] = unit
 
 })
 //moves unit
 $("#unitMenu #moveUnit").click(function(){
 
 	if(movingUnit == false && rotatingUnit==false){
-		$("#"+$("#unitMenu.sub-menu").attr("data-unit-id")).toggleClass("moving")
+		$("#unit-"+$("#unitMenu.sub-menu").attr("data-unit-id")).toggleClass("moving")
 
 		movingUnit=true
 
@@ -171,7 +188,8 @@ $("#unitMenu #moveUnit").click(function(){
 //rotates units
 $("#unitMenu #rotateUnit").click(function(){
 	if(movingUnit == false && rotatingUnit==false){
-		$("#"+$("#unitMenu.sub-menu").attr("data-unit-id")).toggleClass("rotating")
+		//come back
+		$("#unit-"+$("#unitMenu.sub-menu").attr("data-unit-id")).toggleClass("rotating")
 
 		rotatingUnit=true
 
@@ -186,68 +204,140 @@ $("#unitMenu button").click(function(){
 
 
 //----------   map   ----------
-//set up map
-function start(mapUrl,units){
-	//sets up map
-	$("#map > img").attr("src",mapUrl)
+var mouseDown = false
+var lastPos = {x:0,y:0}
 
+//loads map
+function mapLoad(mapUrl){
+	//sets up map
+	$("img#map").attr("src",mapUrl)
+
+	$("img#map").css("min-width","100vw")
+	$("img#map").css("min-height","auto")
+
+	$("img#map").css("width","100vw")
+	$("img#map").css("height","auto")
+
+	$("img#map").css("max-width","100vw")
+	$("img#map").css("max-height","auto")
+
+
+	setTimeout(function () {
+		mapWidth = document.querySelector("img#map").naturalWidth
+		mapHeight = document.querySelector("img#map").naturalHeight
+
+		widthToHeightRatio = mapHeight/mapWidth
+
+		clientWidth = $(document).width()
+		clientHeight = $(document).height()
+
+		if(mapWidth>mapHeight){
+
+			width = (clientHeight/widthToHeightRatio)
+
+			$("img#map").css("min-width",width+"px")
+			$("img#map").css("min-height",clientHeight+"px")
+
+			$("img#map").css("width",width+"px")
+			$("img#map").css("height",clientHeight+"px")
+
+			$("img#map").css("max-width",width+"px")
+			$("img#map").css("max-height",clientHeight+"px")
+
+		}else{
+			
+			height = (clientWidth*widthToHeightRatio)
+
+			$("img#map").css("min-width",clientWidth+"px")
+			$("img#map").css("min-height",height+"px")
+
+			$("img#map").css("width",clientWidth+"px")
+			$("img#map").css("height",height+"px")
+
+			$("img#map").css("max-width",clientWidth+"px")
+			$("img#map").css("max-height",height+"px")
+
+		}
+	},500)
 }
+
 //places new unit on the map
 function newUnit(teamColour){
 	if(movingUnit==false && rotatingUnit==false){
 		
-		var unitId;
-		
-		if(units.length<= 0){
-			unitId = "unit-0"
-		}else{
-			unitId = "unit-"+(parseInt($(".unit").last().attr("id").substring(5, $(".unit").last().attr("id").length))+1)
-		}
-		
-		
-		var temp = {unitId: unitId, unitType: "zug", points: unitTemplates.get("zug").men, light: false, x: undefined, y: undefined, rotation: 0, team: teams[0][0], visibility: ""}
+		var temp = {id: idGen(), unitType: "zug", points: unitTemplates.get("zug").men, light: false, x: undefined, y: undefined, rotation: 0, team: teams[0].name, visibility: ""}
 
 		units.push(temp)
 
-		drawUnit("zug",teamColour)
+		drawUnit("zug",teamColour, temp.id, light=false, placed = false)
 
 		movingUnit = true;
 	}
 }
 
+//scales the maps
+$("#map").mousewheel(function(event){
+	
+	mapScale+=event.deltaY*0.1*-1
+	if(mapScale<0.5){
+		mapScale=0.5
+	}	
+	$("#map").css("transform","scale("+mapScale+")")
+})
+
+
+
+//checks if the mouse button is released
+$(document).mouseup(function(){
+	mouseDown = false;
+})
+
+$("#map").mousedown(function(event){
+	mouseDown = true
+
+	lastPos.x = event.clientX
+	lastPos.y = event.clientY
+
+})
+
 
 //unit hovers on cursor when a unit is being placed
 $("#map").mousemove(function(event){
 	if(movingUnit){
-		$(".moving").css("left",event.clientX+"px")
-		$(".moving").css("top",event.clientY+"px")
+		$(".moving").css("left",(event.pageX - $(this).offset().left)/mapScale+"px")
+		$(".moving").css("top",(event.pageY - $(this).offset().top)/mapScale+"px")
 	}else if(rotatingUnit){
 		//rotate
 
-		unit=units[$(".rotating").attr("id").substring(5,$(".rotating").attr("id").length)]
+		unit=find($(".rotating").attr("id").substring(5,$(".rotating").attr("id").length), units)
 
-		var changeX = Math.abs(event.clientX-parseInt(unit.x.substring(0,unit.x.length-2)))
-		var changeY = Math.abs(event.clientY-parseInt(unit.y.substring(0,unit.y.length-2)))
+		// $(".moving").css("left",(event.pageX - $(this).offset().left)/mapScale+"px")
+		// $(".moving").css("top",(event.pageY - $(this).offset().top)/mapScale+"px")
 
-		var angle = Math.atan(changeY/changeX)
+		mousePos = {
+			x: (event.pageX - $(this).offset().left)/mapScale,
+			y: (event.pageY - $(this).offset().top)/mapScale}
 
+		var changeX = -1*(mousePos.x-parseInt(unit.x.substring(0,unit.x.length-2)))
+		var changeY = -1*(mousePos.y-parseInt(unit.y.substring(0,unit.y.length-2)))
 
-		//coverts angle from counter clock wise to clock wise and makes postive y axis the new starting point of the angle
-		angle = 90-(180*angle)/Math.PI
-
-		//qudrant 4
-		if(event.clientX >= parseInt(unit.x.substring(0,unit.x.length-2)) && event.clientY>=parseInt(unit.y.substring(0,unit.y.length-2))){
-			angle= 180-angle
-		//quadrant 3
-		}else if(event.clientX<=parseInt(unit.x.substring(0,unit.x.length-2)) && event.clientY>=parseInt(unit.y.substring(0,unit.y.length-2))){
-			angle= 180 + angle
-		//quadrant 2
-		}else if(event.clientX<=parseInt(unit.x.substring(0,unit.x.length-2)) && event.clientY<=parseInt(unit.y.substring(0,unit.y.length-2))){
-			angle= 360 - angle
-		//quadrant 1
-		}
-		
+		var angle = Math.atan2(changeY,changeX)
+		angle = (180*angle)/Math.PI-90
 		$(".rotating").css("transform","rotate("+angle+"deg)")
+	//moves the map around
+	}else if(mouseDown){
+
+
+		deltaPos = {x:event.clientX-lastPos.x, y:event.clientY-lastPos.y}
+
+		mapPos = {x: parseInt($("#map").css("left").substring(0,$("#map").css("left").length-2)), y: parseInt($("#map").css("top").substring(0,$("#map").css("top").length-2))}
+
+		$("#map").css("left",(mapPos.x+deltaPos.x)+"px")
+		$("#map").css("top",(mapPos.y+deltaPos.y)+"px")
+
+
+		lastPos.x=event.clientX
+		lastPos.y=event.clientY
 	}
 })
 
@@ -255,14 +345,18 @@ $("#map").mousemove(function(event){
 $("#map").click(function(event){
 	if(movingUnit===true){
 
-		units[$(".moving").attr("id").substring(5,$(".moving").attr("id").length)].x=event.clientX+"px"
-		units[$(".moving").attr("id").substring(5,$(".moving").attr("id").length)].y=event.clientY+"px"
+		unitIndex = find($(".moving").attr("id").substring(5,$(".moving").attr("id").length), units, action = "index")
 
-		$(".moving").css("left",event.clientX+"px")
-		$(".moving").css("top",event.clientY+"px")
+		units[unitIndex].x=(event.pageX - $(this).offset().left)/mapScale+"px"
+		units[unitIndex].y=(event.pageY - $(this).offset().top)/mapScale+"px"
+
+		$(".moving").css("left",(event.pageX - $(this).offset().left)/mapScale+"px")
+		$(".moving").css("top",(event.pageY - $(this).offset().top)/mapScale+"px")
 		$(".moving").removeClass("moving");
 
 		movingUnit=false
+
+		$(".moving").removeClass("moving");
 	}else if(rotatingUnit){
 		//fix rotation
 

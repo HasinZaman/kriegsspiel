@@ -32,6 +32,8 @@
 		
 		<label>map url</label>
 		<input id="mapUrl" type="text">
+<!-- 
+		<button>Set Scale</button> -->
 
 		<label>url</label>
 		<div>
@@ -123,14 +125,16 @@
 	</div> -->
 	<div id="map">
 		<div>
-			<img id="map">
+			<img id="map" draggable="false">
 		</div>
 	</div>
 
 	<!-- scripts -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script type="text/javascript" src="res\script\scenarioCreator.js"></script>
+	<script type="text/javascript" src="res\script\jquery.mousewheel.js"></script>
+<!-- 	<script type="text/javascript" src="res\script\sha.js"></script> -->
 	<script type="text/javascript" src="res\script\map.js"></script>
+	<script type="text/javascript" src="res\script\scenarioCreator.js"></script>
 	<script type="text/javascript" src="res\script\menu.js"></script>
 </body>
 </html>
