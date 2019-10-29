@@ -32,8 +32,8 @@
 		
 		<label>map url</label>
 		<input id="mapUrl" type="text">
-<!-- 
-		<button>Set Scale</button> -->
+
+		<button id="setScale">Set Scale</button>
 
 		<label>url</label>
 		<div>
@@ -77,6 +77,7 @@
 			<img class="cross" onclick="removeTeam(this)" src="res\img\cross.svg">
 		</div>
 	</div>
+
 	<div id="unitMenu" class="sub-menu" data-unit-id="">
 		<div>
 			<div id="rotateUnit">
@@ -120,6 +121,22 @@
 		<button id="apply">appy</button>
 	</div>
 
+	<div id="mapScale" class="sub-menu">
+		<div>
+			<input type="text" id="scaleDist">
+
+			<select id="unit" values="paces">
+				<option value="paces">Paces</option>
+				<option value="miles">Miles</option>
+				<option value="feet">Feet</option>
+				<option value="yards">yards</option>
+				<option value="meters">Meter</option>
+				<option value="kilometers">Kilometer</option>
+			</select>
+			<button>Submit</button>
+		</div>
+	</div>
+
 <!-- 	<div id="surface">
 
 	</div> -->
@@ -132,6 +149,7 @@
 	<!-- scripts -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript" src="res\script\jquery.mousewheel.js"></script>
+	<script type="text/javascript">var scenrioEditor = true</script>
 <!-- 	<script type="text/javascript" src="res\script\sha.js"></script> -->
 	<script type="text/javascript" src="res\script\map.js"></script>
 	<script type="text/javascript" src="res\script\scenarioCreator.js"></script>

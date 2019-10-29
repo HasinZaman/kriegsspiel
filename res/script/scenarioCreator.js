@@ -40,15 +40,53 @@ function removeTeam(team){
 
 }
 
-//---------------   units   ---------------
-
-function createUnit(unitXCord=0, unitYCord=0, unitRot=0, unitTeam=0, unitVisibility=false){
-	unit = {id: createdUnits, x: unitXCord, y: unitYCord, team: unitTeam, visibility: unitVisibility}
-	createdUnits+=1
-	return unit;
-}
-
 //---------------   senerio Setting   ---------------
+
+//sets up the map scale
+$("#senerioSetting.sub-menu #setScale").click(function(){
+	mapCallibration = true
+	$(".active").removeClass("active")
+})
+
+$("#mapScale.sub-menu button").click(function(){
+	var distInput;
+	try{
+		distInput = parseInt($("#mapScale.sub-menu input").val())
+
+		unit = $("#mapScale.sub-menu #unit").val()
+
+				// <option value="paces">Paces</option>
+				// <option value="miles">Miles</option>
+				// <option value="yards">yards</option>
+				// <option value="meters">Meter</option>
+				// <option value="kilometers">Kilometer</option>
+		//px/paces
+		unitScale = temp[1]/distInput
+		
+		if(unit == "miles"){
+			unitScale = unitScale/2112
+		}else if(unit=="feet"){
+			unitScale = unitScale/0.4
+		}else if(unit == "yards"){
+			unitScale = unitScale/1.2
+		}else if(unit == "meters"){
+			unitScale = unitScale/1.31
+		}else if(unit == "kilometers"){
+			unitScale = unitScale/1312.34
+		}
+
+		console.log(unitScale)
+
+		$("#map svg").css("transform","scale("+unitScale+")")
+
+		$(".active").toggleClass("active")
+
+		temp=[]
+		mapCallibration = false
+	}catch(error){
+		$("#mapScale.sub-menu").val("")
+	}
+})
 
 //sets up game link
 $(".url").val("http://kreigsspeil.dx.am/game?id="+senerioToken)

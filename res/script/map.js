@@ -36,6 +36,10 @@ var teams= [{name:"team1", id:idGen(), primaryColour:"#0054FE", secondaryColour:
 //action booleans
 var movingUnit = false;
 var rotatingUnit = false;
+var mapCallibration = false
+
+
+var temp = []
 
 //finds teams by the name
 function find(id, searchList, action = "item", searchObject = "id"){//item=return item||index = return item index
@@ -67,7 +71,7 @@ function drawUnit(type, teamColour, id, light=false, placed=true, moveable=false
 
 	if (placed === false){
 
-		$("#map div").append("<svg id='unit-"+id+"' class='unit moving new' onclick='unitMenuOpen(this)'></svg>")
+		$("#map div").append("<svg id='unit-"+id+"' class='unit moving' onclick='unitMenuOpen(this)'></svg>")
 
 		unit = $("#unit-"+id+".unit")
 	}else{
@@ -103,8 +107,12 @@ function drawUnit(type, teamColour, id, light=false, placed=true, moveable=false
 			break;
 	}
 
+	unit.css("transform","scale("+unitScale+")")
+
 	if (light===true){
-		unit.toggleClass("light")
+		unit.addClass("light")
+	}else if(light===false){
+		unit.removeClass("light")
 	}
 }
 
@@ -118,15 +126,16 @@ function unitMenuOpen(unitRaw){
 
 	//sets up teams
 	for (var i1=0; i1<teams.length;i1++){
-		$("#unitMenu.sub-menu #teams").append("<input type=\"radio\" name=teamName value="+teams[i1].name+"><label>"+teams[i1].name+"</label>")
+		$("#unitMenu.sub-menu #teams").append("<input type=\"radio\" name=teamName value='"+teams[i1].name+"'><label>"+teams[i1].name+"</label>")
 
 		if(teams[i1].name===unit.team){
 			$("#unitMenu.sub-menu #teams input[name=teamName]").last().prop("checked",true)			
 		}
 	}
 
+	$(".active").removeClass("active")
 
-	$("#unitMenu.sub-menu").toggleClass("active")
+	$("#unitMenu.sub-menu").addClass("active")
 	
 	//updates the sub menu for the specific unit
 	$("#unitMenu.sub-menu").attr("data-unit-id",unit.id)
@@ -344,7 +353,6 @@ $("#map").mousemove(function(event){
 //on mouse click a unit is placeds
 $("#map").click(function(event){
 	if(movingUnit===true){
-
 		unitIndex = find($(".moving").attr("id").substring(5,$(".moving").attr("id").length), units, action = "index")
 
 		units[unitIndex].x=(event.pageX - $(this).offset().left)/mapScale+"px"
@@ -363,5 +371,22 @@ $("#map").click(function(event){
 		$(".rotating").removeClass("rotating")
 
 		rotatingUnit=false
+	}else if(mapCallibration){
+		if(temp.length>0){
+
+			changeX = (event.pageX - $(this).offset().left)/mapScale - temp[0][0]
+			changeY = (event.pageY - $(this).offset().top)/mapScale - temp[0][1]
+
+			console.log(changeX)
+			console.log(changeY)
+			dist = Math.sqrt(Math.pow(changeX,2)+Math.pow(changeY,2))
+
+			//come back
+			$("#mapScale.sub-menu").addClass("active")
+
+			temp.push(dist)
+		}else{
+			temp.push([(event.pageX - $(this).offset().left)/mapScale,(event.pageY - $(this).offset().top)/mapScale])
+		}
 	}
 })
