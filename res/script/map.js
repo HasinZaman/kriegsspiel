@@ -313,8 +313,14 @@ $("#map").mousedown(function(event){
 //unit hovers on cursor when a unit is being placed
 $("#map").mousemove(function(event){
 	if(movingUnit){
-		$(".moving").css("left",(event.pageX - $(this).offset().left)/mapScale+"px")
-		$(".moving").css("top",(event.pageY - $(this).offset().top)/mapScale+"px")
+		newPos = [(event.pageX - $(this).offset().left)/mapScale,(event.pageY - $(this).offset().top)/mapScale]
+		
+		unit =unitTemplates.get(find($(".moving").attr("id").substring(5,$(".moving").attr("id").length),units).unitType)
+		newDist=[unit.width-unit.width*unitScale,unit.height-(unit.height*unitScale)]
+
+
+		$(".moving").css("left",(newPos[0]-newDist[0]/2)+"px")
+		$(".moving").css("top",(newPos[1]-newDist[1]/2)+"px")
 	}else if(rotatingUnit){
 		//rotate
 
