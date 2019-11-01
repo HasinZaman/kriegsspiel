@@ -75,8 +75,6 @@ $("#mapScale.sub-menu button").click(function(){
 			unitScale = unitScale/1312.34
 		}
 
-		console.log(unitScale)
-
 		$("#map svg").css("transform","scale("+unitScale+")")
 
 		$(".active").toggleClass("active")

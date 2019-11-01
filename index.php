@@ -23,6 +23,10 @@
 			<img src="res\img\save.svg" alt="save">
 			<label>Save</label>
 		</div>
+		<div onclick="rulerStart()">
+			<img src="res\img\ruler.svg" alt="ruler">
+			<label>Ruler</label>
+		</div>
 	</div>
 
 	<div id="senerioSetting" class="sub-menu">

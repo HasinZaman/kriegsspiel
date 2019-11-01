@@ -2,6 +2,13 @@
 var mapScale = 1 // map scale is renfrence to how much user has zoomed into the map
 var unitScale = 1 // unit scale is in refrence to the map
 
+//sets transform property
+function transform(target, scaleX = 1, scaleY = 1, rotation = "0deg"){
+	console.log(scaleY)
+	console.log("rotate("+rotation+") scaleX("+scaleX+") scaleY("+scaleY+")")
+	target.css("transform","rotate("+rotation+") scaleX("+scaleX+") scaleY("+scaleY+")")
+}
+
 //----------   Unit   ----------
 //creates a unquie id
 function idGen(){
@@ -37,6 +44,7 @@ var teams= [{name:"team1", id:idGen(), primaryColour:"#0054FE", secondaryColour:
 var movingUnit = false;
 var rotatingUnit = false;
 var mapCallibration = false
+var measure = false
 
 
 var temp = []
@@ -71,7 +79,7 @@ function drawUnit(type, teamColour, id, light=false, placed=true, moveable=false
 
 	if (placed === false){
 
-		$("#map div").append("<svg id='unit-"+id+"' class='unit moving' onclick='unitMenuOpen(this)'></svg>")
+		$("#map >div").append("<svg id='unit-"+id+"' class='unit moving' onclick='unitMenuOpen(this)'></svg>")
 
 		unit = $("#unit-"+id+".unit")
 	}else{
@@ -107,7 +115,7 @@ function drawUnit(type, teamColour, id, light=false, placed=true, moveable=false
 			break;
 	}
 
-	unit.css("transform","scale("+unitScale+")")
+	transform(unit,scaleX = unitScale, scaleY = unitScale)
 
 	if (light===true){
 		unit.addClass("light")
@@ -284,14 +292,21 @@ function newUnit(teamColour){
 	}
 }
 
+//creates ruler
+function rulerStart(){
+	$("#ruler").remove()
+	$("#map >div").append("<div id='ruler'><div></div><label></label</div>")
+	measure = true
+}
+
 //scales the maps
 $("#map").mousewheel(function(event){
 	
-	mapScale+=event.deltaY*0.1*-1
+	mapScale+=event.deltaY*0.1
 	if(mapScale<0.5){
 		mapScale=0.5
-	}	
-	$("#map").css("transform","scale("+mapScale+")")
+	}
+	transform($("#map"),scaleX = mapScale, scaleY = mapScale)
 })
 
 
@@ -338,8 +353,35 @@ $("#map").mousemove(function(event){
 
 		var angle = Math.atan2(changeY,changeX)
 		angle = (180*angle)/Math.PI-90
-		$(".rotating").css("transform","rotate("+angle+"deg)")
+		transform($(".rotating"),ScaleX = unitScale, scaleY = unitScale ,rotation = angle+"deg")
+
+		unit.rotation = angle
 	//moves the map around
+	}else if(measure){
+		if(temp.length>0){
+
+
+			mousePos = {
+				x: (event.pageX - $(this).offset().left)/mapScale,
+				y: (event.pageY - $(this).offset().top)/mapScale}
+
+			var changeX = (mousePos.x-temp[0].x)
+			var changeY = (mousePos.y-temp[0].y-25)
+
+			var angle = Math.atan2(changeY,changeX)
+			angle = (180*angle)/Math.PI
+
+			var dist = Math.sqrt(Math.pow(changeX,2)+Math.pow(changeY,2))
+
+			transform($("#ruler"),scaleX = 1, scaleY = 1/mapScale, rotation = angle+"deg")
+			$("#ruler").css("width",dist+"px")
+			$("#ruler > label").text(Math.round(dist/unitScale)+" paces")
+			if(angle <-90 || angle>90){
+				$("#ruler > label").css("transform","scale(-1)")
+			}else{
+				$("#ruler > label").css("transform","scale(1)")
+			}
+		}
 	}else if(mouseDown){
 
 
@@ -393,6 +435,37 @@ $("#map").click(function(event){
 			temp.push(dist)
 		}else{
 			temp.push([(event.pageX - $(this).offset().left)/mapScale,(event.pageY - $(this).offset().top)/mapScale])
+		}
+	}else if(measure){
+		//come back
+		if(temp.length>0){
+
+			mousePos = {
+				x: (event.pageX - $(this).offset().left)/mapScale,
+				y: (event.pageY - $(this).offset().top)/mapScale}
+
+			var changeX = (mousePos.x-temp[0].x)
+			var changeY = (mousePos.y-temp[0].y-25)
+
+			var angle = Math.atan2(changeY,changeX)
+			angle = (180*angle)/Math.PI
+
+			var dist = Math.sqrt(Math.pow(changeX,2)+Math.pow(changeY,2))
+
+			transform($("#ruler"),scaleX = 1,scaleY = 1/mapScale, rotation = angle+"deg")
+			$("#ruler").css("width",dist+"px")
+
+			measure = false
+			temp=[]
+
+
+		}else{
+			temp = []
+			temp.push({x:(event.pageX - $(this).offset().left)/mapScale,y:(event.pageY - $(this).offset().top)/mapScale-25})
+			console.log(temp)
+			console.log(event.pageX)
+			$("#ruler").css("left",temp[0].x+"px")
+			$("#ruler").css("top",temp[0].y+"px")
 		}
 	}
 })
