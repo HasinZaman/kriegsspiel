@@ -19,13 +19,13 @@
 			<img src="res\img\placeUnit.svg" alt="place unit">
 			<label>Place Unit</label>
 		</div>
-		<div data-menu-option="save" onclick="senerioCreator(this)">
-			<img src="res\img\save.svg" alt="save">
-			<label>Save</label>
-		</div>
 		<div onclick="rulerStart()">
 			<img src="res\img\ruler.svg" alt="ruler">
 			<label>Ruler</label>
+		</div>
+		<div data-menu-option="save" onclick="senerioCreator(this)">
+			<img src="res\img\save.svg" alt="save">
+			<label>Save</label>
 		</div>
 	</div>
 
