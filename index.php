@@ -34,6 +34,9 @@
 		<label>Senerio name</label>
 		<input id="senerioName" type="text">
 		
+		<label>Senerio Description</label>
+		<textarea id="senerioDesc"></textarea>
+
 		<label>map url</label>
 		<input id="mapUrl" type="text">
 
@@ -60,24 +63,28 @@
 			teams
 			<button onclick="makeTeam()">add Team</button>
 		</div>
-		<div id="team" data-teamid="0">
-			<input type="text" value="team1">
+		<div id="team" data-teamid="undefined">
+			<input type="text" name="teamName" value="team1">
 			<label>Primary Colour:</label>
-			<input type="color" name="primaryColour" value="#0054FE" '="">
+			<input type="color" name="primaryColour" value="#0054FE">
 			<label>Secondary Colour:</label>
 			<input type="color" name="secondaryColour" value="#9293FF">
 			<label>Highlight Colour:</label>
-			<input type="color" name="secondaryColour" value="#FFFFFF">
+			<input type="color" name="highlightColour" value="#FFFFFF">
+			<label>Team Password:</label>
+			<input type='text' name='teamPassword'>
 			<img class="cross" onclick="removeTeam(this)" src="res\img\cross.svg">
 		</div>
-		<div id="team" data-teamid="1">
-			<input type="text" value="team2">
+		<div id="team" data-teamid="undefined">
+			<input type="text"  name="teamName" value="team2">
 			<label>Primary Colour:</label>
-			<input type="color" name="primaryColour" value="#FF0800" '="">
+			<input type="color" name="primaryColour" value="#FF0800">
 			<label>Secondary Colour:</label>
 			<input type="color" name="secondaryColour" value="#28AE00">
 			<label>Highlight Colour:</label>
-			<input type="color" name="secondaryColour" value="#FFFFFF">
+			<input type="color" name="highlightColour" value="#FFFFFF">
+			<label>Team Password:</label>
+			<input type='text' name='teamPassword'>
 			<img class="cross" onclick="removeTeam(this)" src="res\img\cross.svg">
 		</div>
 	</div>
@@ -86,23 +93,28 @@
 		<div>
 			<div id="rotateUnit">
 				<img src="res\img\rotate.svg" alt="rotate unit symbol">
-				<div>
-					Rotate
-				</div>
+				Rotate
 			</div>
 			<div id="moveUnit">
 				<img  src="res\img\move.svg" alt="move unit symbol">
-				<div>
-					Move
-				</div>
+				Move
+			</div>
+			<div id="deleteUnit">
+				<img  src="res\img\cross.svg" alt="move unit symbol">
+				Delete
 			</div>
 		</div>
 		<div>
 			<label>Id:</label>
 			<input id="unitId" class="url" readonly type="text">
 		</div>
+		
+		<label>Team:</label>
 		<div id="teams">
-			
+		</div>
+
+		<label>Visible to:</label>
+		<div id="visibilty">
 		</div>
 		<div>
 			<label>
