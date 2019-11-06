@@ -119,3 +119,74 @@ $(".url").val("http://kreigsspeil.dx.am/game?id="+senerioToken)
 $("#senerioSetting.sub-menu #mapUrl").keypress(function(){
 	mapLoad($("#senerioSetting.sub-menu #mapUrl").val())
 })
+
+//---------- scenario menu ----------
+
+function senerioCreator(object){
+	
+	var action = object.getAttribute("data-menu-option");
+
+	if($(object).hasClass("active")){
+		$(".active").removeClass("active")
+	}else{
+		$(".active").removeClass("active")
+
+		$(object).toggleClass("active");
+		$("#menu").addClass("active");
+
+		if(action == "senerioSetting" || action == "teamSetting"){
+		
+			$("#"+action).toggleClass("active");
+		
+		}else if(action === "placeUnit"){
+			try{
+				if(teams.length>1){
+					newUnit([teams[1].primaryColour,teams[1].secondaryColour,teams[1].highlightColour])
+				}else{
+					alert("there are no teams")
+				}
+				
+			}catch(error){
+
+				if(error.toString(0,45) === "TypeError: Cannot read property '1' of undefined"){
+					alert("there are no teams")	
+				}else{
+					console.log(error)
+				}
+			 	
+			}
+			$(".active").removeClass("active")	
+		}else if(action === "save"){
+
+			let teamTemp = teams
+
+			teamTemp.shift()
+
+			var temp = {
+				scenarioTitle: $("#senerioSetting.sub-menu #senerioName").val(),
+				scenarioDesc: $("#senerioSetting.sub-menu #senerioDesc").val(),
+				umpirePassword: $("#teamSetting.sub-menu #umpireInfo input[name='umpirePassword']").val(),
+				scenarioMap: $("#map >div >img").attr("src"),
+				scenarioScale: unitScale,
+				scenarioTeams: teamTemp,
+				scenarioUnit: units
+			}
+
+			var connection = $.ajax({
+				url: "res/script/post.php",
+				type: "POST",
+				data: {method:"gameSetup", gameId: senerioToken, gameInfo: temp}
+			}).done(test)
+		}
+	}
+}
+function test(result){
+	if(result === 1){
+		alert("sucsses")
+		//sucess
+	}else{
+		console.log(result)
+		alert("fail")
+
+	}
+}

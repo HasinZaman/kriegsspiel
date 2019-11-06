@@ -262,17 +262,17 @@ function mapLoad(mapUrl){
 
 
 	setTimeout(function () {
-		mapWidth = document.querySelector("img#map").naturalWidth
-		mapHeight = document.querySelector("img#map").naturalHeight
+		var mapWidth = document.querySelector("img#map").naturalWidth
+		var mapHeight = document.querySelector("img#map").naturalHeight
 
-		widthToHeightRatio = mapHeight/mapWidth
+		var widthToHeightRatio = mapHeight/mapWidth
 
-		clientWidth = $(document).width()
-		clientHeight = $(document).height()
+		var clientWidth = $(document).width()
+		var clientHeight = $(document).height()
 
 		if(mapWidth>mapHeight){
 
-			width = (clientHeight/widthToHeightRatio)
+			var width = (clientHeight/widthToHeightRatio)
 
 			$("img#map").css("min-width",width+"px")
 			$("img#map").css("min-height",clientHeight+"px")
@@ -285,7 +285,7 @@ function mapLoad(mapUrl){
 
 		}else{
 			
-			height = (clientWidth*widthToHeightRatio)
+			var height = (clientWidth*widthToHeightRatio)
 
 			$("img#map").css("min-width",clientWidth+"px")
 			$("img#map").css("min-height",height+"px")
@@ -303,12 +303,10 @@ function mapLoad(mapUrl){
 //places new unit on the map
 function newUnit(teamColour){
 	if(movingUnit==false && rotatingUnit==false){
-		
-		console.log(teams[1].id)
 
 		var temp = {id: idGen(), unitType: "zug", points: unitTemplates.get("zug").men, light: false, x: undefined, y: undefined, rotation: 0, team: teams[1].id, visibility: []}
 
-		team = teams[find(temp.team,teams)]
+		var team = teams[find(temp.team,teams)]
 
 		units.push(temp)
 
@@ -329,6 +327,7 @@ function rulerStart(){
 $("#map").mousewheel(function(event){
 	
 	mapScale+=event.deltaY*0.1
+
 	if(mapScale<0.5){
 		mapScale=0.5
 	}
@@ -354,10 +353,10 @@ $("#map").mousedown(function(event){
 //unit hovers on cursor when a unit is being placed
 $("#map").mousemove(function(event){
 	if(movingUnit){
-		newPos = [(event.pageX - $(this).offset().left)/mapScale,(event.pageY - $(this).offset().top)/mapScale]
+		var newPos = [(event.pageX - $(this).offset().left)/mapScale,(event.pageY - $(this).offset().top)/mapScale]
 		
-		unit =unitTemplates.get(units[find($(".moving").attr("id").substring(5,$(".moving").attr("id").length),units)].unitType)
-		newDist=[unit.width-unit.width*unitScale,unit.height-(unit.height*unitScale)]
+		var unit = unitTemplates.get(units[find($(".moving").attr("id").substring(5,$(".moving").attr("id").length),units)].unitType)
+		var newDist = [unit.width-unit.width*unitScale,unit.height-(unit.height*unitScale)]
 
 
 		$(".moving").css("left",(newPos[0]-newDist[0]/2)+"px")
@@ -365,12 +364,12 @@ $("#map").mousemove(function(event){
 	}else if(rotatingUnit){
 		//rotate
 
-		unit=units[find($(".rotating").attr("id").substring(5,$(".rotating").attr("id").length), units)]
+		var unit = units[find($(".rotating").attr("id").substring(5,$(".rotating").attr("id").length), units)]
 
 		// $(".moving").css("left",(event.pageX - $(this).offset().left)/mapScale+"px")
 		// $(".moving").css("top",(event.pageY - $(this).offset().top)/mapScale+"px")
 
-		mousePos = {
+		var mousePos = {
 			x: (event.pageX - $(this).offset().left)/mapScale,
 			y: (event.pageY - $(this).offset().top)/mapScale}
 
@@ -378,7 +377,7 @@ $("#map").mousemove(function(event){
 		var changeY = -1*(mousePos.y-parseInt(unit.y.substring(0,unit.y.length-2)))
 
 		var angle = Math.atan2(changeY,changeX)
-		angle = (180*angle)/Math.PI-90
+		var angle = (180*angle)/Math.PI-90
 		transform($(".rotating"),ScaleX = unitScale, scaleY = unitScale ,rotation = angle+"deg")
 
 		unit.rotation = angle
@@ -387,7 +386,7 @@ $("#map").mousemove(function(event){
 		if(temp.length>0){
 
 
-			mousePos = {
+			var mousePos = {
 				x: (event.pageX - $(this).offset().left)/mapScale,
 				y: (event.pageY - $(this).offset().top)/mapScale}
 
@@ -395,7 +394,7 @@ $("#map").mousemove(function(event){
 			var changeY = (mousePos.y-temp[0].y-25)
 
 			var angle = Math.atan2(changeY,changeX)
-			angle = (180*angle)/Math.PI
+			var angle = (180*angle)/Math.PI
 
 			var dist = Math.sqrt(Math.pow(changeX,2)+Math.pow(changeY,2))
 
@@ -411,9 +410,9 @@ $("#map").mousemove(function(event){
 	}else if(mouseDown){
 
 
-		deltaPos = {x:event.clientX-lastPos.x, y:event.clientY-lastPos.y}
+		var deltaPos = {x:event.clientX-lastPos.x, y:event.clientY-lastPos.y}
 
-		mapPos = {x: parseInt($("#map").css("left").substring(0,$("#map").css("left").length-2)), y: parseInt($("#map").css("top").substring(0,$("#map").css("top").length-2))}
+		var mapPos = {x: parseInt($("#map").css("left").substring(0,$("#map").css("left").length-2)), y: parseInt($("#map").css("top").substring(0,$("#map").css("top").length-2))}
 
 		$("#map").css("left",(mapPos.x+deltaPos.x)+"px")
 		$("#map").css("top",(mapPos.y+deltaPos.y)+"px")
@@ -427,7 +426,7 @@ $("#map").mousemove(function(event){
 //on mouse click a unit is placeds
 $("#map").click(function(event){
 	if(movingUnit===true){
-		unitIndex = find($(".moving").attr("id").substring(5,$(".moving").attr("id").length), units)
+		var unitIndex = find($(".moving").attr("id").substring(5,$(".moving").attr("id").length), units)
 
 		units[unitIndex].x=(event.pageX - $(this).offset().left)/mapScale+"px"
 		units[unitIndex].y=(event.pageY - $(this).offset().top)/mapScale+"px"
@@ -448,12 +447,10 @@ $("#map").click(function(event){
 	}else if(mapCallibration){
 		if(temp.length>0){
 
-			changeX = (event.pageX - $(this).offset().left)/mapScale - temp[0][0]
-			changeY = (event.pageY - $(this).offset().top)/mapScale - temp[0][1]
+			var changeX = (event.pageX - $(this).offset().left)/mapScale - temp[0][0]
+			var changeY = (event.pageY - $(this).offset().top)/mapScale - temp[0][1]
 
-			console.log(changeX)
-			console.log(changeY)
-			dist = Math.sqrt(Math.pow(changeX,2)+Math.pow(changeY,2))
+			var dist = Math.sqrt(Math.pow(changeX,2)+Math.pow(changeY,2))
 
 			//come back
 			$("#mapScale.sub-menu").addClass("active")
@@ -466,7 +463,7 @@ $("#map").click(function(event){
 		//come back
 		if(temp.length>0){
 
-			mousePos = {
+			var mousePos = {
 				x: (event.pageX - $(this).offset().left)/mapScale,
 				y: (event.pageY - $(this).offset().top)/mapScale}
 
@@ -474,7 +471,7 @@ $("#map").click(function(event){
 			var changeY = (mousePos.y-temp[0].y-25)
 
 			var angle = Math.atan2(changeY,changeX)
-			angle = (180*angle)/Math.PI
+			var angle = (180*angle)/Math.PI
 
 			var dist = Math.sqrt(Math.pow(changeX,2)+Math.pow(changeY,2))
 
@@ -488,8 +485,7 @@ $("#map").click(function(event){
 		}else{
 			temp = []
 			temp.push({x:(event.pageX - $(this).offset().left)/mapScale,y:(event.pageY - $(this).offset().top)/mapScale-25})
-			console.log(temp)
-			console.log(event.pageX)
+
 			$("#ruler").css("left",temp[0].x+"px")
 			$("#ruler").css("top",temp[0].y+"px")
 		}

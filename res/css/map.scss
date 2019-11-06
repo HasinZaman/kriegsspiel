@@ -1,3 +1,5 @@
+
+//---------- body styles ----------
 body{
 	overflow: hidden;
 	> div{
@@ -243,7 +245,9 @@ $padding: 15px;
 .sub-menu.active{
 	display: flex;
 }
+
 //---------- menu styles ----------
+
 #map{
 
 	min-width: 100vw;
@@ -317,5 +321,21 @@ $padding: 15px;
 		.light{
 			outline: solid 5px green !important;
 		}
+	}
+}
+
+//---------- game styles ----------
+
+body.blur{
+	::not(#login){
+		filter: blur(2.5px) grayscale(100%);
+		-webkit-filter: blur(2.5px) grayscale(100%);
+	}
+	#login{
+
+		
+
+
+
 	}
 }
