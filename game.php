@@ -26,6 +26,13 @@ $_SESSION["gameToken"] = $_GET["gameToken"];
 			<label>Senerio</label>
 			
 		</div>
+
+
+		<div onclick="rulerStart()">
+			<img src="res\img\ruler.svg" alt="ruler">
+			<label>Ruler</label>
+		</div>
+		
 	</div>
 
 	<div id="senerioInfo" class="sub-menu">
@@ -36,44 +43,8 @@ $_SESSION["gameToken"] = $_GET["gameToken"];
 	</div>
 
 	<div id="unitMenu" class="sub-menu" data-unit-id="">
-		<div>
-			<div id="rotateUnit">
-				<img src="res\img\rotate.svg" alt="rotate unit symbol">
-				Rotate
-			</div>
-			<div id="moveUnit">
-				<img  src="res\img\move.svg" alt="move unit symbol">
-				Move
-			</div>
-			<div id="deleteUnit">
-				<img  src="res\img\cross.svg" alt="move unit symbol">
-				Delete
-			</div>
-		</div>
-		<div>
-			<label>Id:</label>
-			<input id="unitId" class="url" readonly type="text">
-		</div>
-		
-		<label>Team:</label>
-		<div id="teams">
-		</div>
 
-		<div>
-			<label>
-				Unit Type
-			</label>
-			<div id="unitType">
-				<option value="zug">Zug</option>
-				<option value="company">Company</option>
-				<option value="hBattalion">Half Battalion</option>
-			</div>
-		</div>
-		<div>
-			<label>Points</label>
-			<input id="unitPoint" type="text" name="points">
-		</div>
-		<button id="apply">appy</button>
+
 	</div>
 
 	<div id="map">

@@ -141,7 +141,7 @@ function senerioCreator(object){
 		}else if(action === "placeUnit"){
 			try{
 				if(teams.length>1){
-					newUnit([teams[1].primaryColour,teams[1].secondaryColour,teams[1].highlightColour])
+					newUnit(1)
 				}else{
 					alert("there are no teams")
 				}
@@ -162,31 +162,30 @@ function senerioCreator(object){
 
 			teamTemp.shift()
 
-			var temp = {
+			let gameInfoTemp = {
 				scenarioTitle: $("#senerioSetting.sub-menu #senerioName").val(),
 				scenarioDesc: $("#senerioSetting.sub-menu #senerioDesc").val(),
 				umpirePassword: $("#teamSetting.sub-menu #umpireInfo input[name='umpirePassword']").val(),
 				scenarioMap: $("#map >div >img").attr("src"),
-				scenarioScale: unitScale,
-				scenarioTeams: teamTemp,
-				scenarioUnit: units
+				scenarioScale: unitScale
 			}
 
 			var connection = $.ajax({
 				url: "res/script/post.php",
 				type: "POST",
-				data: {method:"gameSetup", gameId: senerioToken, gameInfo: temp}
+				data: {
+					method:"gameSetup",
+					gameId: senerioToken,
+					gameInfo: gameInfoTemp,
+					teamsInfo: teamTemp,
+					unitsInfo: units
+				}
 			}).done(test)
 		}
 	}
 }
-function test(result){
-	if(result === 1){
-		alert("sucsses")
-		//sucess
-	}else{
-		console.log(result)
-		alert("fail")
 
-	}
-}
+
+//on page load
+
+loadEvents()

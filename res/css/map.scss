@@ -327,7 +327,7 @@ $padding: 15px;
 //---------- game styles ----------
 
 body.blur{
-	::not(#login){
+	>:not(#login){
 		filter: blur(2.5px) grayscale(100%);
 		-webkit-filter: blur(2.5px) grayscale(100%);
 	}

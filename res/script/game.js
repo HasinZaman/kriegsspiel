@@ -12,6 +12,7 @@ function gameInfoRequest(){
 }
 
 function gameInfoReciver(reciver){
+	console.log(reciver)
 	result = JSON.parse(reciver)
 
 	teams = result["scenarioTeams"]
@@ -47,8 +48,10 @@ function teamLogin(selectedTeamId){
 	}).done(teamLoginReciver)
 }
 function teamLoginReciver(reciver){
+	console.log(reciver)
 	if(reciver === 0){
 		//fail
+
  	}else{
  		$("body").append(reciver)
  	}

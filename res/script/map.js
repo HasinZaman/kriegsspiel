@@ -129,16 +129,29 @@ function unitMenuOpen(unitRaw){
 	$("#unitMenu.sub-menu #teams, #unitMenu.sub-menu #visibilty").html("")
 
 	//sets up teams
-	for (var i1=1; i1<teams.length;i1++){
+
+	let startIndex = 1;
+
+	if(teams[0].id !== "noTeam"){
+		startIndex = 0
+	}
+	for (var i1=startIndex; i1<teams.length;i1++){
 		$("#unitMenu.sub-menu #teams").append("<input type=\"radio\" name=teamName value='"+teams[i1].id+"'><label>"+teams[i1].name+"</label>")
+
 
 		if(teams[i1].id === unit.team){
 			$("#unitMenu.sub-menu #teams input[name=teamName]").last().prop("checked",true)			
 		}else{
 			$("#unitMenu.sub-menu #visibilty").append("<input type=\"checkbox\" name=\"visibility\" value='"+teams[i1].id+"'><label>"+teams[i1].name+"</label>")
 
-			if(unit.visibility.indexOf(teams[i1].id)>=0){
-				$("#unitMenu.sub-menu #visibilty input[name=visibility]").last().prop("checked",true)
+
+			try{
+				console.log(unit)
+				if(unit.visibility.indexOf(teams[i1].id)>=0){
+					$("#unitMenu.sub-menu #visibilty input[name=visibility]").last().prop("checked",true)
+				}
+			}catch(error){
+				console.log(error)
 			}
 			//comeback
 		}
@@ -158,88 +171,91 @@ function unitMenuOpen(unitRaw){
 
 }
 
-$("#unitMenu.sub-menu #apply").click(function(){
-	var unit = units[find($("#unitMenu.sub-menu").attr("data-unit-id"),units)]
-	var drawingCond = false
+//sets jquery events
+function loadEvents(){
+	$("#unitMenu.sub-menu #apply").click(function(){
+		var unit = units[find($("#unitMenu.sub-menu").attr("data-unit-id"),units)]
+		var drawingCond = false
 
-	if($('#unitMenu.sub-menu #teams input[name=teamName]:checked').val() != unit.team){
-		unit.team = $('#unitMenu.sub-menu #teams input[name=teamName]:checked').val()
+		if($('#unitMenu.sub-menu #teams input[name=teamName]:checked').val() != unit.team){
+			unit.team = $('#unitMenu.sub-menu #teams input[name=teamName]:checked').val()
 
-		drawingCond = true
-	}
+			drawingCond = true
+		}
 
-	tempVisibilty = []
-	$("#unitMenu.sub-menu #visibilty input[name=visibility]:checked").each(function() {
-		tempVisibilty.push($(this).val());
+		tempVisibilty = []
+		$("#unitMenu.sub-menu #visibilty input[name=visibility]:checked").each(function() {
+			tempVisibilty.push($(this).val());
+		})
+
+		unit.visibility = tempVisibilty
+
+		if($("#unitMenu.sub-menu #unitType option:selected").val() !== unit.unitType){
+			unit.unitType = $("#unitMenu.sub-menu #unitType").val()
+
+			drawingCond = true
+		}
+
+		if($("#unitMenu.sub-menu #lightUnit").prop("checked") !== unit.light){
+			unit.light = $("#unitMenu.sub-menu #lightUnit").prop("checked")
+			
+			drawingCond = true
+		}
+
+		if(parseInt($("#unitMenu.sub-menu #unitPoint").val()) !== unit.points){
+			unit.points = parseInt($("#unitMenu.sub-menu #unitPoint").val())
+		}
+
+		if(drawingCond = true){
+			var team = teams[find(unit.team, teams)]
+
+			drawUnit(unit.unitType, [team.primaryColour, team.secondaryColour, team.highlightColour], unit.id, light=unit.light)
+		}
+
+		units[find($("#unitMenu.sub-menu").attr("data-unit-id").substring(5,$("#unitMenu.sub-menu").attr("data-unit-id").length), units, acton = "index")] = unit
+
+	})
+	//moves unit
+	$("#unitMenu #moveUnit").click(function(){
+
+		if(movingUnit == false && rotatingUnit==false){
+			$("#unit-"+$("#unitMenu.sub-menu").attr("data-unit-id")).toggleClass("moving")
+
+			movingUnit=true
+
+			$("#unitMenu.sub-menu").toggleClass("active")
+		}
+		
 	})
 
-	unit.visibility = tempVisibilty
+	//rotates units
+	$("#unitMenu #rotateUnit").click(function(){
+		if(movingUnit == false && rotatingUnit==false){
+			//come back
+			$("#unit-"+$("#unitMenu.sub-menu").attr("data-unit-id")).toggleClass("rotating")
 
-	if($("#unitMenu.sub-menu #unitType option:selected").val() !== unit.unitType){
-		unit.unitType = $("#unitMenu.sub-menu #unitType").val()
+			rotatingUnit=true
 
-		drawingCond = true
-	}
+			$("#unitMenu.sub-menu").toggleClass("active")
+		}
+	})
 
-	if($("#unitMenu.sub-menu #lightUnit").prop("checked") !== unit.light){
-		unit.light = $("#unitMenu.sub-menu #lightUnit").prop("checked")
-		
-		drawingCond = true
-	}
+	//deletes unit
+	$("#unitMenu #deleteUnit").click(function(){
 
-	if(parseInt($("#unitMenu.sub-menu #unitPoint").val()) !== unit.points){
-		unit.points = parseInt($("#unitMenu.sub-menu #unitPoint").val())
-	}
+		units.splice(find($("#unitMenu.sub-menu").attr("data-unit-id"),units),1)
 
-	if(drawingCond = true){
-		var team = teams[find(unit.team, teams)]
+		$("#unit-"+$("#unitMenu.sub-menu").attr("data-unit-id")).remove()
 
-		drawUnit(unit.unitType, [team.primaryColour, team.secondaryColour, team.highlightColour], unit.id, light=unit.light)
-	}
-
-	units[find($("#unitMenu.sub-menu").attr("data-unit-id").substring(5,$("#unitMenu.sub-menu").attr("data-unit-id").length), units, acton = "index")] = unit
-
-})
-//moves unit
-$("#unitMenu #moveUnit").click(function(){
-
-	if(movingUnit == false && rotatingUnit==false){
-		$("#unit-"+$("#unitMenu.sub-menu").attr("data-unit-id")).toggleClass("moving")
-
-		movingUnit=true
 
 		$("#unitMenu.sub-menu").toggleClass("active")
-	}
-	
-})
+	})
 
-//rotates units
-$("#unitMenu #rotateUnit").click(function(){
-	if(movingUnit == false && rotatingUnit==false){
-		//come back
-		$("#unit-"+$("#unitMenu.sub-menu").attr("data-unit-id")).toggleClass("rotating")
-
-		rotatingUnit=true
-
-		$("#unitMenu.sub-menu").toggleClass("active")
-	}
-})
-
-//deletes unit
-$("#unitMenu #deleteUnit").click(function(){
-
-	units.splice(find($("#unitMenu.sub-menu").attr("data-unit-id"),units),1)
-
-	$("#unit-"+$("#unitMenu.sub-menu").attr("data-unit-id")).remove()
-
-
-	$("#unitMenu.sub-menu").toggleClass("active")
-})
-
-//closes the mene
-$("#unitMenu button").click(function(){
-	$("#unitMenu").toggleClass("active")
-})
+	//closes the mene
+	$("#unitMenu button").click(function(){
+		$("#unitMenu").toggleClass("active")
+	})
+}
 
 
 //----------   map   ----------
@@ -301,10 +317,10 @@ function mapLoad(mapUrl){
 }
 
 //places new unit on the map
-function newUnit(teamColour){
+function newUnit(teamIndex){
 	if(movingUnit==false && rotatingUnit==false){
 
-		var temp = {id: idGen(), unitType: "zug", points: unitTemplates.get("zug").men, light: false, x: undefined, y: undefined, rotation: 0, team: teams[1].id, visibility: []}
+		var temp = {id: idGen(), unitType: "zug", points: unitTemplates.get("zug").men, light: false, x: undefined, y: undefined, rotation: 0, team: teams[teamIndex].id, visibility: []}
 
 		var team = teams[find(temp.team,teams)]
 
@@ -314,6 +330,27 @@ function newUnit(teamColour){
 
 		movingUnit = true;
 	}
+}
+
+//draws all units
+function drawAllUnit(){
+	$("svg").remove()
+	for(var i1 = 0; i1 < units.length; i1++){
+		team = teams[find(units[i1].team,teams)]
+
+		console.log(team)
+
+		drawUnit(units[i1].unitType, [team.primaryColour, team.secondaryColour, team.highlightColour], units[i1].id, light=units[i1].light, placed=false)
+
+
+		console.log("#unit-"+units[i1].id+".unit")
+
+		$("#unit-"+units[i1].id+".unit").css("top",units[i1].y)
+		$("#unit-"+units[i1].id+".unit").css("left",units[i1].x)
+
+		transform($("#unit-"+units[i1].id+".unit"), unitScale, unitScale, units[i1].rotation+"deg")
+	}
+	$(".moving").removeClass("moving")
 }
 
 //creates ruler
@@ -348,7 +385,6 @@ $("#map").mousedown(function(event){
 	lastPos.y = event.clientY
 
 })
-
 
 //unit hovers on cursor when a unit is being placed
 $("#map").mousemove(function(event){
@@ -491,3 +527,12 @@ $("#map").click(function(event){
 		}
 	}
 })
+
+
+
+
+
+
+function test(result){
+	console.log(result)
+}
