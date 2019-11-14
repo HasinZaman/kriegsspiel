@@ -114,7 +114,7 @@ $("#mapScale.sub-menu button").click(function(){
 })
 
 //sets up game link
-$(".url").val("http://kreigsspeil.dx.am/game?id="+senerioToken)
+$(".url").val("http://kreigsspeil.dx.am/game?gameToken="+senerioToken)
 
 $("#senerioSetting.sub-menu #mapUrl").keypress(function(){
 	mapLoad($("#senerioSetting.sub-menu #mapUrl").val())

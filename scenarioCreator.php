@@ -127,9 +127,9 @@
 				Unit Type
 			</label>
 			<select id="unitType">
-				<option value="zug">Zug</option>
+<!-- 				<option value="zug">Zug</option>
 				<option value="company">Company</option>
-				<option value="hBattalion">Half Battalion</option>
+				<option value="hBattalion">Half Battalion</option> -->
 			</select>
 			<label>
 				Light:

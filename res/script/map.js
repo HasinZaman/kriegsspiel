@@ -27,9 +27,30 @@ var unitTemplates = new Map();
 
 
 //ever 1 units = 1 pace = 1px
-unitTemplates.set("zug",{height:25,width:100,men:83})
-unitTemplates.set("hBattalion",{height:100,width:100,men:500})
-unitTemplates.set("company",{height:75,width:75,men:250})
+//infantry units
+unitTemplates.set("zug",{name:"Zug",height:25,width:100,men:83})
+unitTemplates.set("hBattalion",{name:"Half Battalion",height:100,width:100,men:500})
+unitTemplates.set("company",{name:"Company",height:75,width:75,men:250})
+//cavalry
+unitTemplates.set("cuirassier",{name:"Cuirassier",height:100, width:100,men:1})
+unitTemplates.set("hussar",{name:"Hussar",height:100, width:100,men:1})
+unitTemplates.set("dragoon",{name:"Dragoon",height:100, width:100,men:1})
+unitTemplates.set("uhlan",{name:"Uhlan",height:100, width:100,men:1})
+//arilery
+unitTemplates.set("twoSmallGunBattery",{name:"Two Gun Section from Horse Battery",height:100, width:50,men:1})
+unitTemplates.set("twoGun4PounderBattery",{name:"Two Gun Section from 4 Pounder Battery",height:100, width:50,men:1})
+unitTemplates.set("twoGun6PounderBattery",{name:"Two Gun Section from 6 Pounder Battery",height:100, width:50,men:1})
+unitTemplates.set("twoGun12PounderBattery",{name:"Two Gun Section from 12 Pounder Battery",height:100, width:50,men:1})
+
+unitTemplates.set("smallGunBattery",{name:"Horse Battery",height:100, width:100,men:1})
+unitTemplates.set("4PounderBattery",{name:"4 Pounder Battery",height:100, width:100,men:1})
+unitTemplates.set("6PounderBattery",{name:"6 Pounder Battery",height:100, width:100,men:1})
+unitTemplates.set("12PounderBattery",{name:"12 Pounder Battery",height:100, width:100,men:1})
+
+function unitSelectorIntializer(value, key, map){
+	console.log("<option value="+key+">"+value["name"]+"</option>")
+	$("#unitMenu.sub-menu #unitType").append("<option value='"+key+"'>"+value["name"]+"</option>")
+}
 
 //all the units on the map
 var units = [];
@@ -84,30 +105,84 @@ function drawUnit(type, teamColour, id, light=false, placed=true, moveable=false
 		unit.html()
 	}
 	
+	unit.css("width",unitTemplates.get(type).width+"px")
+	unit.css("height",unitTemplates.get(type).height+"px")
 
 	switch(type){
+		//infantry
 		case "zug":
 
-			unit.css("width",unitTemplates.get("zug").width+"px")
-			unit.css("height",unitTemplates.get("zug").height+"px")
-
-			unit.html("<path fill='"+teamColour[0]+"' fill-rule='evenodd' stroke='none' stroke-width='1.33333' d='M 0,0 L 100,0 L 100,25 L 0,25 Z'/>")	
+			unit.html("<path fill='"+teamColour[0]+"' d='M 0,0 L 100,0 L 100,25 L 0,25 Z'/>")	
 
 			break;
 		case "hBattalion":
-			
-			unit.css("width",unitTemplates.get("hBattalion").width+"px")
-			unit.css("height",unitTemplates.get("hBattalion").height+"px")
 
-			unit.html("<path fill="+teamColour[2]+" fill-rule='evenodd' stroke='none' stroke-width='1.33333' d='M 0,0 L 100,0 L 100,100 L 0,100 Z '/>\n<path fill="+teamColour[0]+" fill-rule='evenodd' stroke='none' stroke-width='1.33333' d='M 0,0 L 100,0 L 100,50 L 0,50 Z'/>\n<path fill="+teamColour[1]+" fill-rule='evenodd' stroke='none' stroke-width='1.33333' d='M 0,100 L 100,50 L 100,100 Z'/>")	
+			unit.html("<path fill="+teamColour[2]+" d='M 0,0 L 100,0 L 100,100 L 0,100 Z '/>\n<path fill="+teamColour[0]+" d='M 0,0 L 100,0 L 100,50 L 0,50 Z'/>\n<path fill="+teamColour[1]+" fill-rule='evenodd' stroke='none' stroke-width='1.33333' d='M 0,100 L 100,50 L 100,100 Z'/>")	
 
 			break;
 		case "company":
 
-			unit.css("width",unitTemplates.get("company").width+"px")
-			unit.css("height",unitTemplates.get("company").height+"px")
+			unit.html("<path fill="+teamColour[0]+" d='M 0,0 L 75,0 L 75,75 L 0,75 Z'/>\n<path fill="+teamColour[1]+" d='M 0,75 L 75,0 L 75,75 Z'/>")	
+			break;
 
-			unit.html("<path fill="+teamColour[0]+" fill-rule='evenodd' stroke='none' stroke-width='1.33333' d='M 0,0 L 75,0 L 75,75 L 0,75 Z'/>\n<path fill="+teamColour[1]+" fill-rule='evenodd' stroke='none' stroke-width='1.33333' d='M 0,75 L 75,0 L 75,75 Z'/>")	
+		//cavalry
+		case "cuirassier":
+
+			unit.html("<path fill="+teamColour[0]+" d=\"M 0,0 L 0,100 L 100,100 L 100,0 Z \"/>\n<path fill="+teamColour[1]+" d=\"M 95,0 L 100,0 L 100,5 L 5,100 L 0,100 L 0,95 Z\"/>\n<path fill="+teamColour[2]+" d=\"M 100,5 L 100,10 L 10,100 L 5,100 Z \"/>\n<path fill="+teamColour[1]+" d=\"M 100,10 L 100,100 L 10,100 Z\"/>")
+			break;
+
+		case "hussar":
+
+			unit.html("<path fill="+teamColour[0]+" d='M 0,0 L 100,0 L 100,100 L 0,100 Z'/>\n<path fill="+teamColour[1]+" d='M 0,100 L 100,0 L 100,100 Z'/>")
+			break;
+
+		case "dragoon":
+
+			unit.html("<path fill="+teamColour[0]+" d=\"M 0,0 L 100,0 L 100,100 L 0,100 Z \"/>\n<path fill="+teamColour[2]+" d=\"M  100,0 L 100,5 L 5,100 L 0,100 Z\"/>\n<path fill="+teamColour[1]+"  d=\"M  100,5 L 100,100 L 5,100 Z\"/>")	
+			break;
+
+		case "uhlan":
+
+			unit.html("<path fill="+teamColour[0]+" d=\"M 0,0 L 100,0 L 100,100 L 0,100 Z \"/>\n<path fill="+teamColour[2]+" d=\"M 47.5,70 L 52.5,70 L 52.5,30 L 65,30 L 52.5,25 L 52.5,24 L 47.5,24 Z\"/>\n<path fill="+teamColour[1]+" d=\"M 100,0 L 100,100 L 0,100 Z \"/>")	
+			break;
+
+		//artilery
+		case "twoSmallGunBattery":
+
+			unit.html("<path fill='"+teamColour[0]+"' d=\"M 0,0 L 50,0 L 50,100 L 0,100 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 0,50 L 50,50 L 50,100 L 0,100 Z\"/>\n<path fill='"+teamColour[1]+"' d=\"M 0,100 L 25,100 L 25,50 Z\"/>\n<path fill='"+teamColour[1]+"' d=\"M 25,100 L 50,100 L 50,50 Z\"/>\n<g transform=\"translate(2.5 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g><g transform=\"translate(27.5 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g>")
+			break;
+
+		case "twoGun4PounderBattery":
+
+			unit.html("<path fill='"+teamColour[0]+"' d=\"M 0,0 L 50,0 L 50,100 L 0,100 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 0,50 L 50,50 L 50,100 L 0,100 Z\"/>\n<path fill='"+teamColour[1]+"' d=\"M 0,100 L 50,100 L 50,50 Z\"/>\n<text x=\"5\" y=\"70\" fill="+teamColour[0]+">4</text>\n<g transform=\"translate(2.5 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g><g transform=\"translate(27.5 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g>")
+			break;
+
+		case "twoGun6PounderBattery":
+
+			unit.html("<path fill='"+teamColour[0]+"' d=\"M 0,0 L 50,0 L 50,100 L 0,100 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 0,50 L 50,50 L 50,100 L 0,100 Z\"/>\n<path fill='"+teamColour[1]+"' d=\"M 0,100 L 50,100 L 50,50 Z\"/>\n<text x=\"5\" y=\"70\" fill="+teamColour[0]+">6</text>\n<g transform=\"translate(2.5 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g><g transform=\"translate(27.5 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g>")
+			break;
+
+		case "twoGun12PounderBattery":
+
+			unit.html("<path fill='"+teamColour[0]+"' d=\"M 0,0 L 50,0 L 50,100 L 0,100 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 0,50 L 50,50 L 50,100 L 0,100 Z\"/>\n<path fill='"+teamColour[1]+"' d=\"M 0,100 L 50,100 L 50,50 Z\"/>\n<text x=\"5\" y=\"70\" fill="+teamColour[0]+">12</text>\n<g transform=\"translate(2.5 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g><g transform=\"translate(27.5 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g>")
+			break;
+
+		case "smallGunBattery":
+
+			unit.html("<path d=\"M 0,0 L 100,0 L 100,100 L 0,100 Z\" fill='"+teamColour[0]+"'/>\n<path fill='"+teamColour[2]+"' d=\"M 0,50 L 100,50 L 100,100 L 0,100 Z\"/><path fill='"+teamColour[1]+"' d=\"M 0,100 L 50,100 L 50,50 Z\"/>\n<path fill='"+teamColour[1]+"' d=\"M 50,100 L 100,100 L 100,50 Z\"/>\n<g transform=\"translate(10 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g><g transform=\"translate(40 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g><g transform=\"translate(70 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g>")
+			break;
+
+		case "4PounderBattery":
+		
+			unit.html("<path d=\"M 0,0 L 100,0 L 100,100 L 0,100 Z\" fill='"+teamColour[0]+"'/>\n<path fill='"+teamColour[2]+"' d=\"M 0,50 L 100,50 L 100,100 L 0,100 Z\"/>\n<path fill='"+teamColour[1]+"' d=\"M 0,100 L 100,100 L 100,50 Z\"/><text x=\"5\" y=\"70\" fill="+teamColour[0]+">4</text>\n<g transform=\"translate(10 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g><g transform=\"translate(40 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g><g transform=\"translate(70 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g>")
+			break;
+
+		case "6PounderBattery":
+			unit.html("<path d=\"M 0,0 L 100,0 L 100,100 L 0,100 Z\" fill='"+teamColour[0]+"'/>\n<path fill='"+teamColour[2]+"' d=\"M 0,50 L 100,50 L 100,100 L 0,100 Z\"/>\n<path fill='"+teamColour[1]+"' d=\"M 0,100 L 100,100 L 100,50 Z\"/><text x=\"5\" y=\"70\" fill="+teamColour[0]+">6</text>\n<g transform=\"translate(10 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g><g transform=\"translate(40 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g><g transform=\"translate(70 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g>")
+			break;
+
+		case "12PounderBattery":
+			unit.html("<path d=\"M 0,0 L 100,0 L 100,100 L 0,100 Z\" fill='"+teamColour[0]+"'/>\n<path fill='"+teamColour[2]+"' d=\"M 0,50 L 100,50 L 100,100 L 0,100 Z\"/>\n<path fill='"+teamColour[1]+"' d=\"M 0,100 L 100,100 L 100,50 Z\"/><text x=\"5\" y=\"70\" fill="+teamColour[0]+">12</text>\n<g transform=\"translate(10 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g><g transform=\"translate(40 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g><g transform=\"translate(70 5)\">\n<path fill='"+teamColour[2]+"' d=\"M 0,15 L 5,15 L 5,35 L 0,35 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 7,0 L 13,0 L 13,40 L 7,40 Z\"/>\n<path fill='"+teamColour[2]+"' d=\"M 15,15 L 20,15 L 20,35 L 15,35 Z\"/>\n</g>")
 			break;
 	}
 
@@ -255,6 +330,7 @@ function loadEvents(){
 	$("#unitMenu button").click(function(){
 		$("#unitMenu").toggleClass("active")
 	})
+	unitTemplates.forEach(unitSelectorIntializer)
 }
 
 
@@ -462,13 +538,24 @@ $("#map").mousemove(function(event){
 //on mouse click a unit is placeds
 $("#map").click(function(event){
 	if(movingUnit===true){
+
+
+
 		var unitIndex = find($(".moving").attr("id").substring(5,$(".moving").attr("id").length), units)
 
-		units[unitIndex].x=(event.pageX - $(this).offset().left)/mapScale+"px"
-		units[unitIndex].y=(event.pageY - $(this).offset().top)/mapScale+"px"
+		var newPos = [(event.pageX - $(this).offset().left)/mapScale,(event.pageY - $(this).offset().top)/mapScale]
+		
+		var unit = unitTemplates.get(units[find($(".moving").attr("id").substring(5,$(".moving").attr("id").length),units)].unitType)
+		var newDist = [unit.width-unit.width*unitScale,unit.height-(unit.height*unitScale)]
 
-		$(".moving").css("left",(event.pageX - $(this).offset().left)/mapScale+"px")
-		$(".moving").css("top",(event.pageY - $(this).offset().top)/mapScale+"px")
+
+		units[unitIndex].x=(newPos[0]-newDist[0]/2)+"px"
+		units[unitIndex].y=(newPos[1]-newDist[1]/2)+"px"
+
+		
+
+		$(".moving").css("left",(newPos[0]-newDist[0]/2)+"px")
+		$(".moving").css("top",(newPos[1]-newDist[1]/2)+"px")
 		$(".moving").removeClass("moving");
 
 		movingUnit=false

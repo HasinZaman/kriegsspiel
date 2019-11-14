@@ -1,0 +1,142 @@
+
+$colour1: rgb(70, 54, 50);
+$colour2: rgb(190,166,160);
+
+
+$colour3: rgb(254,8,0);
+$colour4: rgb(0,95,225);
+
+//basic format
+h1{
+
+	font-size: 3em;
+}
+
+body{
+	overflow-x: hidden;
+	background-color: $colour2;
+}
+
+#baner{
+
+	position: relative;
+	overflow: hidden;
+
+
+	width: 110vw;
+	min-height: 500px;
+
+	margin-top: -10px;
+	margin-left: -10px;
+
+	>*{
+		position: absolute;
+		top: 0px;
+		left: 0px;
+	}
+	.backgroundImage{
+		width: 100%;
+		height: 100%;
+		background-image: url("../img/bgImg1.png");
+		background-size: cover;
+
+		transition: background-image 5s;
+	}
+	#filter{
+
+		width: 100%;
+		height: 100%;
+
+		background-color: $colour1;
+
+		opacity: 0.9;
+	}
+	#description{
+
+		width: 50%;
+		height: fit-content;
+
+		padding: 20px;
+
+		margin: 10% 10%;
+
+		h1,p{
+			color: white;
+		}
+
+		h1{
+			margin: 5px;
+		}
+
+		p{
+			margin-left: 60px;
+			padding: 10px;
+
+			font-size: 1.5em;
+		}
+	}
+	#description{
+
+	}
+}
+
+#menu{
+	width: 110vw;
+	height: 35px;
+
+	margin-left: -10px;
+
+	background-color: $colour1;
+
+	display: flex;
+
+	justify-content: center;
+
+	>label{
+		width: fit-content;
+		height: 25px;
+
+		padding: 5px 20px;
+		
+		margin-left: 20px;
+
+		display: flex;
+		flex-direction: column;
+
+		justify-content: center;
+
+		h2{
+
+			font-size: 12px;
+
+			transition: font-size 0.3s;
+
+			color: white;
+
+			margin:0px;
+		}
+		div{
+			margin-left: 50%;
+			width: 0%;
+			height: 2px;
+			min-height: 2px;
+
+			transition: margin 0.5s, width 0.5s;
+
+			background-color: white;
+		}
+	}
+	>label:hover{
+		h2{
+			font-size: 20px;;
+		}
+		div{
+			margin-left: -5%;
+			width: 110%;
+		}
+	}
+}
+
+#body{
+
+}

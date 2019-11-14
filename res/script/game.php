@@ -157,7 +157,7 @@ function umpireSetUp($units){
 
 		echo "}).done(test);";
 
-	echo "}, 1000*10);";
+	echo "}, 1000*60);";
 
 	echo "</script>";
 }
@@ -206,9 +206,11 @@ function teamSetUp($teamId){
 			echo "console.log(reciver);";
 			echo "units = JSON.parse(reciver);";
 
+			echo "drawAllUnit();";
+
 		echo "});";
 
-	echo "}, 1000*5);";
+	echo "}, 1000*60);";
 
 	echo "</script>";
 }
@@ -244,9 +246,11 @@ function teamLogin(){
 				//echos umpire code
 				umpireSetUp(json_encode($units));
 
-			}elseif (PasswordStorage::verify_password($_POST["password"], $umpirePassword)){
-				umpireSetUp(json_encode($units));
-			}
+			}elseif ($umpirePassword !== ""){
+				if(PasswordStorage::verify_password($_POST["password"], $umpirePassword)){
+					umpireSetUp(json_encode($units));
+				}	
+			} 
 		}else{
 
 			foreach ($teams as $team) {
@@ -254,8 +258,10 @@ function teamLogin(){
 				if($team["id"] === $_POST["team"]){
 					if($team["password"] === "" && $_POST["password"] === ""){
 						teamSetUp($_POST["team"]);
-					}elseif (PasswordStorage::verify_password($_POST["password"], $team["password"])){
-						teamSetUp($_POST["team"]);
+					}elseif($team["password"] !== ""){
+						if (PasswordStorage::verify_password($_POST["password"], $team["password"])){
+							teamSetUp($_POST["team"]);
+						}
 					}
 				}		
 			}
@@ -317,13 +323,16 @@ function gameUpdate(){
 	$command->bind_result($gameHistoryRaw);
 
 	while ($command->fetch()){
-		if (!(is_null($gameHistoryRaw))){
+
+		if ($gameHistoryRaw !== "null"){
 			$gameHistory = json_decode($gameHistoryRaw,true);
 		}else{
 			$gameHistory = [];
 		}
 	}
 
+
+	echo gettype($gameHistory)."\n"."\n";
 
 	$command = $conn->prepare("UPDATE `games` SET `units`=?,`unitHistory`=? WHERE gameId = ?");
 
