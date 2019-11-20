@@ -20,23 +20,37 @@
 	</div>
 </div>
 <nav id="menu">
+	<label id="update">
+		<a href="index.php">
+			<h2>
+				Update
+			</h2>
+			<div></div>
+		</a>
+	</label>
 	<label id="guide">
-		<h2>
-			Game Guide
-		</h2>
-		<div></div>
+		<a href="guide.php">
+			<h2>
+				Game Guide
+			</h2>
+			<div></div>
+		</a>
 	</label>
 	<label>
-		<h2>
-			Find Game
-		</h2>
-		<div></div>
+		<a href="gameSelection.php">
+			<h2>
+				Find Game
+			</h2>
+			<div></div>
+		</a>
 	</label>
 	<label>
-		<h2>
-			Create Scenerio
-		</h2>
-		<div></div>
+		<a href="scenarioCreator.php">
+			<h2>
+				Create Scenerio
+			</h2>
+			<div></div>
+		</a>
 	</label>
 </nav>
 
@@ -45,21 +59,16 @@
 		update
 	</h2>
 
-	<div>
-
+	<article>
 		<h2>
-			How to play
+			Open Beta
 		</h2>
-		<div>
-			dfdsfasdf
-		</div>
-		<a href="">Read More...</a>
-	</div>
 
+		<p>
+			Kreigsspeil is finally at point where it is playable. However, many bugs and issues are still haven't been found. It is highly appreciated if any and all bugs can be <a href="https://forms.gle/TSZarv7EmzzDoXtG9">reported</a>
 
-	<div>
-
-	</div>
+		</p>
+	</article>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">

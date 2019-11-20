@@ -14,7 +14,6 @@ h1{
 
 body{
 	overflow-x: hidden;
-	background-color: $colour2;
 }
 
 #baner{
@@ -60,7 +59,7 @@ body{
 
 		margin: 10% 10%;
 
-		h1,p{
+		h1,p,.quote{
 			color: white;
 		}
 
@@ -74,9 +73,14 @@ body{
 
 			font-size: 1.5em;
 		}
-	}
-	#description{
+		.quote{
 
+			font-size: 1em;
+
+			label{
+				float: right;
+			}
+		}
 	}
 }
 
@@ -104,6 +108,10 @@ body{
 		flex-direction: column;
 
 		justify-content: center;
+
+		a{
+			text-decoration: none;	
+		}
 
 		h2{
 
@@ -137,6 +145,168 @@ body{
 	}
 }
 
-#body{
+.body{
+
+	width: 80%;
+	height: fit-content;
+
+	margin: 30px 10%;
+
+	article{
+
+		h2,h3{
+			width: 200px;
+		}
+
+		h2{
+
+			margin: 30px auto 10px 30px;
+
+			border-bottom: solid 5px $colour1;
+
+			text-indent: 5px;
+		}
+		h3{
+			margin: 10px auto 10px 5px;
+		}
+		p{
+			text-indent: 50px;
+		}
+		div{
+			display: flex;
+			
+		}
+		img{
+
+		}
+		img:nth-child(2n+3){
+			background: $colour2;
+		}
+
+	}
+}
+
+#gameSearch{
+	width: 80%;
+
+	nav{
+		width: 100%;
+
+		background-color: $colour1;
+
+		color: white;
+
+		display: flex;
+
+		>*{
+			margin: 5px 15px;
+		}
+		input[type="text"]{
+			width: 40%;
+		}
+
+	}
+
+	#games{
+		width: 100%;
+
+		display: flex;
+		flex-direction: column;
+
+		> div:first-child{
+			background-color: $colour1;
+
+			color:white;
+		}
+
+
+		> div{
+
+			width: 100%;
+			display: grid;
+
+			grid-template-columns: 1fr 2fr 1fr 1fr;
+			grid-template-rows: 1fr;
+			grid-template-areas: "name desc team join";
+
+			label{
+				width: 100%;
+
+				margin: 5px;
+
+				padding: 5px;
+
+
+			}
+			label{
+				width: 100%;
+
+				text-overflow: ellipsis;
+			}
+			#name{
+				grid-area: name;
+			}
+			#description{
+				grid-area: desc;
+			}
+			#teams{
+				grid-area: team;
+			}
+
+			>a{
+				grid-area: join;
+				
+				button{
+					width: 100%;
+					height: 100%;	
+				}
+			}
+
+
+			label:after{
+				content: "|";
+				margin-right: 10px;
+				float: right;
+			}
+		}
+		div:nth-child(2n+3){
+			background: $colour2;
+		}
+	}
+	>div:last-child{
+
+		padding-top: 10px;
+		padding-bottom: 6px;
+
+		display: flex;
+
+		flex-direction: column;
+
+		justify-content: center;
+
+		background-color: $colour1;
+		color: white;
+		>div{
+
+			display: flex;
+
+			justify-content: center;
+
+			>*{
+				margin-left: 5px;
+				margin-right: 2.5px;
+			}
+
+			input[type="text"]{
+				width: 60px;
+
+				text-align: center;
+			}
+
+		}
+		>div:last-child{
+			margin-top: 5px;
+		};
+	}
 
 }

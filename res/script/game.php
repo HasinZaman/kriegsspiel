@@ -2,6 +2,69 @@
 //load dependencies
 session_start();
 
+//----------   Game info   ----------
+//gets a list of games
+function gameQuery(){
+
+	$conn = new mysqli(DB_SERVER, DB_NAME, DB_PASSWORD, DB_DATABASE);
+
+	$command = $conn->prepare("SELECT `gameId`,`gameInfo`,`teams` FROM games ORDER BY `gameId` DESC LIMIT 10 OFFSET ?");
+
+	$page = $_POST["page"];
+
+	$offset = $page*10;
+
+	$command->bind_param("i",$offset);
+
+	$result = [];
+
+	$command->execute();
+
+	$command->store_result();
+
+	$command->bind_result($gameId, $gameInfoRaw, $teamInfoRaw);
+
+	while ($command->fetch()) {
+		$gameInfo = json_decode($gameInfoRaw,true);
+		$teamInfo = json_decode($teamInfoRaw,true);
+
+		unset($gameInfo["umpirePassword"]);
+		unset($gameInfo["scenarioScale"]);
+
+		$teams = [];
+
+		for($i1 = 0; $i1 < sizeof($teamInfo); $i1++){
+			array_push($teams, $teamInfo[$i1]["name"]);
+		}
+
+		$temp = ["gameId"=>$gameId, "gameInfo"=>$gameInfo, "teamInfo"=>$teams];
+
+		array_push($result, $temp);
+
+	}
+
+	echo json_encode($result);
+	$conn->close();
+}
+
+//returns the number of active games
+function gameQueryNum(){
+
+	$conn = new mysqli(DB_SERVER, DB_NAME, DB_PASSWORD, DB_DATABASE);
+
+	$command = $conn->prepare("SELECT * FROM games");
+
+	$command->execute();
+
+	$command->store_result();
+
+	echo $command->num_rows;
+
+	$conn->close();
+
+
+
+}
 
 //----------   Game setup   ----------
 

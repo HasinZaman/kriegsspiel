@@ -14,6 +14,8 @@ $_SESSION["gameToken"] = $_GET["gameToken"];
 
 	<div id="login" class="sub-menu active">
 
+		<button><a herf="gameSelection.php">Go Back</a></button>
+
 		<label>Select Team</label>
 
 		<label data-team-id='umpire' onclick="teamSelect(this)">umpire</label>
